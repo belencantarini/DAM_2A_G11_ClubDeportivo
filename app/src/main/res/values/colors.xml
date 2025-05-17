@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="orange">#f1600d</color>
+    <color name="navy_blue">#1a265a</color> <!-- Azul marino -->
+    <color name="sky_blue">#50A4E0</color> <!-- Celeste -->
+    <color name="gray">#D3D3D3</color> <!-- Gris -->
+</resources>
