@@ -121,7 +121,7 @@
                 android:id="@+id/blueoverlay"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@color/navy_blue"
+                android:background="@drawable/shape_navy_blue_round_corners"
                 android:alpha="0.8"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
