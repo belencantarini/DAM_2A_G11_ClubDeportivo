@@ -6,4 +6,5 @@
     <color name="navy_blue">#1a265a</color> <!-- Azul marino -->
     <color name="sky_blue">#50A4E0</color> <!-- Celeste -->
     <color name="gray">#D3D3D3</color> <!-- Gris -->
+    <color name="red">#D32F2F</color> <!-- Rojo  -->
 </resources>
