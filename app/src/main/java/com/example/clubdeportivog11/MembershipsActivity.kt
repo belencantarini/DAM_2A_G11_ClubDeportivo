@@ -24,8 +24,7 @@ class MembershipsActivity : AppCompatActivity() {
         val btnVolver = findViewById<Button>(R.id.btnVolverM)
 
         btnVolver.setOnClickListener() {
-            val intent = Intent(this, MenuActivity::class.java);
-            startActivity(intent);
+            finish();
         }
 
 

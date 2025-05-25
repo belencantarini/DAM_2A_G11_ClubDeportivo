@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MembershipsActivity">
+
     <!-- Fondo -->
     <ImageView
         android:id="@+id/bgImage"
@@ -72,18 +73,9 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/shape_transp_navy_blue_round_corners"
                 >
-                <!-- Capa azul marino -->
-                <View
-                    android:id="@+id/blueoverlay"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:background="@drawable/shape_navy_blue_round_corners"
-                    android:alpha="0.7"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+
                 <!-- Gris de 2 x 3 -->
                 <GridLayout
                     android:layout_width="wrap_content"
@@ -115,7 +107,7 @@
                         <ImageView
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:src="@drawable/socios" />
+                            android:src="@drawable/icon_btn_socios" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -142,7 +134,7 @@
                         <ImageView
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:src="@drawable/actividades_no_socios" />
+                            android:src="@drawable/icon_btn_actividades_no_socios" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -167,18 +159,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:background="@drawable/shape_transp_navy_blue_round_corners"
                 >
 
-                <!-- Capa azul marino -->
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:background="@drawable/shape_navy_blue_round_corners"
-                    android:alpha="0.6"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <LinearLayout
                     android:id="@+id/verPlanes"

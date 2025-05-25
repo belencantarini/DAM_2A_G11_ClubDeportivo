@@ -21,8 +21,7 @@ class PaymentsActivity : AppCompatActivity() {
         val btnVolver = findViewById<Button>(R.id.btnVolverRP)
 
         btnVolver.setOnClickListener() {
-            val intent = Intent(this, MenuActivity::class.java);
-            startActivity(intent);
+            finish();
         }
     }
 }

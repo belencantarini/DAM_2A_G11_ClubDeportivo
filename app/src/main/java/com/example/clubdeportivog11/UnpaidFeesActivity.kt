@@ -22,8 +22,7 @@ class UnpaidFeesActivity : AppCompatActivity() {
         val btnVolver = findViewById<Button>(R.id.btnVolverCV)
 
         btnVolver.setOnClickListener() {
-            val intent = Intent(this, MenuActivity::class.java);
-            startActivity(intent);
+            finish();
         }
     }
 }

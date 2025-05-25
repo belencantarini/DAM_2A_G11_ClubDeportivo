@@ -50,18 +50,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/shape_transp_navy_blue_round_corners"
         >
-        <!-- Capa azul marino -->
-        <View
-            android:id="@+id/blueoverlay"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/shape_navy_blue_round_corners"
-            android:alpha="0.7"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+
         <!-- Gris de 2 x 3 -->
         <GridLayout
             android:layout_width="wrap_content"
@@ -92,7 +83,7 @@
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/nuevo_cliente" />
+                    android:src="@drawable/icon_btn_nuevo_cliente" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -119,7 +110,7 @@
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/listado_clientes" />
+                    android:src="@drawable/icon_btn_listado_clientes" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -146,7 +137,7 @@
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/registrar_pago" />
+                    android:src="@drawable/icon_btn_registrar_pago" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -172,7 +163,7 @@
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/listado_planes" />
+                    android:src="@drawable/icon_btn_listado_planes" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -198,7 +189,7 @@
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/cuotas_vencidas" />
+                    android:src="@drawable/icon_btn_cuotas_vencidas" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -225,7 +216,7 @@
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/cerrar_sesion" />
+                    android:src="@drawable/icon_btn_cerrar_sesion" />
 
                 <TextView
                     android:layout_width="wrap_content"

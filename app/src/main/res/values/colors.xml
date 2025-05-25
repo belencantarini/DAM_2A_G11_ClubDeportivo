@@ -7,4 +7,6 @@
     <color name="sky_blue">#50A4E0</color> <!-- Celeste -->
     <color name="gray">#D3D3D3</color> <!-- Gris -->
     <color name="red">#D32F2F</color> <!-- Rojo  -->
+    <color name="black_50_transparent">#80000000</color>
+    <color name="navy_blue_70_transparent">#B31a265a</color>
 </resources>

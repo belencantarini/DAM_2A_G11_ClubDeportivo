@@ -38,8 +38,7 @@ class NewClientActivity : AppCompatActivity() {
         val btnVolver = findViewById<Button>(R.id.btnVolverRC)
 
         btnVolver.setOnClickListener() {
-            val intent = Intent(this, MenuActivity::class.java);
-            startActivity(intent);
+            finish();
         }
     }
 }

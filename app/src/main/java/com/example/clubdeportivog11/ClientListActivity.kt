@@ -22,8 +22,7 @@ class ClientListActivity : AppCompatActivity() {
         val btnVolver = findViewById<Button>(R.id.btnVolverBC)
 
         btnVolver.setOnClickListener() {
-            val intent = Intent(this, MenuActivity::class.java);
-            startActivity(intent);
+            finish();
         }
 
         val btnVer = findViewById<Button>(R.id.btnVerPC)

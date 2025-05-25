@@ -22,8 +22,7 @@ class ClientProfileActivity : AppCompatActivity() {
         val btnVolver = findViewById<Button>(R.id.btnVolverPC)
 
         btnVolver.setOnClickListener() {
-            val intent = Intent(this, MenuActivity::class.java);
-            startActivity(intent);
+            finish();
         }
     }
 }

@@ -80,17 +80,21 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
 
             <Button
-                android:layout_width="80dp"
+                android:layout_width="60dp"
                 android:layout_height="50dp"
                 android:text="Ir a pagar"
+                android:padding="4dp"
+                android:textColor="@color/white"
                 android:textSize="12sp"
                 android:backgroundTint="@color/sky_blue"
                 />
 
             <Button
-                android:layout_width="80dp"
+                android:layout_width="60dp"
                 android:layout_height="50dp"
                 android:text="Dar baja"
+                android:padding="4dp"
+                android:textColor="@color/white"
                 android:textSize="12sp"
                 android:backgroundTint="@color/red"
                 />

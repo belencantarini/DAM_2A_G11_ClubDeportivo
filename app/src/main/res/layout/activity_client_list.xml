@@ -112,10 +112,12 @@
 
             <Button
                 android:id="@+id/btnVerPC"
-                android:layout_width="80dp"
+                android:layout_width="60dp"
                 android:layout_height="50dp"
                 android:text="Ver"
                 android:textSize="16sp"
+                android:padding="4dp"
+                android:textColor="@color/white"
                 android:backgroundTint="@color/sky_blue"
                 />
 
