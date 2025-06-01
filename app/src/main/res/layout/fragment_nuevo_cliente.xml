@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".NuevoClienteFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/botonesRegistrarCliente">
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/textTituloBuscar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nuevo cliente"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Nombre -->
+        <EditText
+            android:id="@+id/etNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/shape_white_round_corners"
+            android:padding="12dp" />
+
+        <!-- Apellido -->
+        <EditText
+            android:id="@+id/etApellido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Apellido"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/shape_white_round_corners"
+            android:padding="12dp" />
+
+        <!-- Tipo de documento -->
+        <Spinner
+            android:id="@+id/spinnerTipoDocumento"
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/shape_white_round_corners"/>
+
+        <!-- Número de documento -->
+        <EditText
+            android:id="@+id/etNumeroDocumento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Número de documento"
+            android:inputType="number"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/shape_white_round_corners"
+            android:padding="12dp" />
+
+        <!-- Apto físico -->
+        <CheckBox
+            android:id="@+id/checkAptoFisico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="Apto físico"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/black"
+            android:paddingHorizontal="28dp"
+            android:background="@drawable/shape_white_round_corners"/>
+
+        <!-- Sección Socio / No Socio -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/shape_transp_navy_blue_round_corners"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Seleccione"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:paddingHorizontal="40dp"
+                    android:textSize="18sp"
+                    />
+
+                <RadioGroup
+                    android:id="@+id/radioTipoCliente"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/radioSocio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Socio"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"/>
+
+                    <RadioButton
+                        android:id="@+id/radioNoSocio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No Socio"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"/>
+                </RadioGroup>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+    <!-- Botón abajo del todo -->
+    <LinearLayout
+        android:id="@+id/botonesRegistrarCliente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="60dp">
+        <Button
+            android:id="@+id/btnRegistrarCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Registrar Cliente"
+            android:textSize="18sp"
+            android:backgroundTint="@color/sky_blue"
+            />
+        <Button
+            android:id="@+id/btnVolverRC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Volver"
+            android:textSize="18sp"
+            android:backgroundTint="@color/orange" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

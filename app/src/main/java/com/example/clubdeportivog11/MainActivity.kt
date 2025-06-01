@@ -1,53 +1,86 @@
 package com.example.clubdeportivog11
 
-import android.content.Intent
 import android.os.Bundle
-import android.text.InputType
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
+import android.view.View
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-
+import androidx.fragment.app.Fragment
 
 class MainActivity : AppCompatActivity() {
 
-
+    private var menuAbierto = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
 
+        val menuButton = findViewById<ImageView>(R.id.btnHamburguesa)
+        val menuOverlayContainer = findViewById<FrameLayout>(R.id.menuOverlayContainer)
+
+        // Seteo mi menu el el menuOverlayContainer y luego lo dejo oculto
+        supportFragmentManager.beginTransaction()
+            .add(R.id.menuOverlayContainer, MenuFragment())
+            .commit()
+        menuOverlayContainer.visibility = View.GONE
+
+        // Mostrar fragmento con su fondo por defecto
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, InicioFragment())
+            .commit()
+
+        menuButton.setOnClickListener {
+            toggleMenu()
         }
+    }
 
-        val btnLogin = findViewById<Button>(R.id.btnLogin)
 
-        btnLogin.setOnClickListener() {
-            val intent = Intent(this, MenuActivity::class.java);
-            startActivity(intent);
+
+     fun toggleMenu() {
+        val menuOverlayContainer = findViewById<FrameLayout>(R.id.menuOverlayContainer)
+        val menuButton = findViewById<ImageView>(R.id.btnHamburguesa)
+        if (menuAbierto) {
+            // Cerrar menú
+            menuOverlayContainer.visibility = View.GONE
+            menuButton.setImageResource(R.drawable.icon_btn_menu)
+            menuAbierto = false
+        } else {
+            // Abrir menú
+            menuOverlayContainer.visibility = View.VISIBLE
+            menuButton.setImageResource(R.drawable.icon_btn_close) // ícono de cerrar
+            menuAbierto = true
         }
-
-        val chbPass = findViewById<CheckBox>(R.id.chbPassword)
-        val txtPass = findViewById<EditText>(R.id.lgnPassword)
+    }
 
 
-        chbPass.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                // Mostrar contraseña
-                txtPass.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
-            } else {
-                // Ocultar contraseña
-                txtPass.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
-            }
-            // Mover el cursor al final
-            txtPass.setSelection(txtPass.length())
+    fun closeMenu() {
+        if (menuAbierto) {
+            val menuOverlayContainer = findViewById<FrameLayout>(R.id.menuOverlayContainer)
+            val menuButton = findViewById<ImageView>(R.id.btnHamburguesa)
+            menuOverlayContainer.visibility = View.GONE
+            menuButton.setImageResource(R.drawable.icon_btn_menu)
+            menuAbierto = false
         }
-        }
+    }
+
+
+    fun cambiarFondo(resourceId: Int) {
+        val bgImage = findViewById<ImageView>(R.id.bgImage)
+        bgImage.setImageResource(resourceId)
+    }
+
+
+    fun irASeccion(idFondo: Int, fragmento: Fragment) {
+        cambiarFondo(idFondo)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragmento)
+            .commit()
+
+        // Además de ir a la sección, cerramos el menú si está abierto
+        closeMenu()
+    }
 }
