@@ -4,6 +4,9 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.example.clubdeportivog11.models.ActividadesDataClass
+import com.example.clubdeportivog11.models.ClientesDataClass
+import com.example.clubdeportivog11.models.PlanesDataClass
 
 class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null, 1){
 
@@ -22,17 +25,6 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
             )
         """.trimIndent())
 
-        db.execSQL("""
-            CREATE TABLE Usuario (
-                UsuarioID INTEGER PRIMARY KEY AUTOINCREMENT,
-                Nombre TEXT NOT NULL UNIQUE,
-                Pass TEXT NOT NULL,
-                ClienteID INTEGER,
-                RolUsuario INTEGER NOT NULL,
-                FOREIGN KEY (ClienteID) REFERENCES Cliente(ClienteID),
-                FOREIGN KEY (RolUsuario) REFERENCES Roles(RolUsuario)
-            )
-        """.trimIndent())
 
         db.execSQL("""
             CREATE TABLE Cliente (
@@ -41,7 +33,6 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
                 Apellido TEXT NOT NULL,
                 TipoDocumento TEXT NOT NULL,
                 NumeroDocumento INTEGER NOT NULL,
-                FechaNacimiento TEXT,
                 FechaInscripcion TEXT NOT NULL,
                 AptoFisico INTEGER DEFAULT 0,
                 UNIQUE (TipoDocumento, NumeroDocumento)
@@ -52,7 +43,7 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
             CREATE TABLE Socio (
                 SocioID INTEGER PRIMARY KEY AUTOINCREMENT,
                 ClienteID INTEGER NOT NULL,
-                FechaVencimientoCuota TEXT NOT NULL,
+                FechaVencimientoCuota TEXT,
                 FOREIGN KEY (ClienteID) REFERENCES Cliente(ClienteID)
             )
         """.trimIndent())
@@ -62,6 +53,18 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
                 NoSocioID INTEGER PRIMARY KEY AUTOINCREMENT,
                 ClienteID INTEGER NOT NULL,
                 FOREIGN KEY (ClienteID) REFERENCES Cliente(ClienteID)
+            )
+        """.trimIndent())
+
+        db.execSQL("""
+            CREATE TABLE Usuario (
+                UsuarioID INTEGER PRIMARY KEY AUTOINCREMENT,
+                Nombre TEXT NOT NULL UNIQUE,
+                Pass TEXT NOT NULL,
+                ClienteID INTEGER,
+                RolUsuario INTEGER NOT NULL,
+                FOREIGN KEY (ClienteID) REFERENCES Cliente(ClienteID),
+                FOREIGN KEY (RolUsuario) REFERENCES Roles(RolUsuario)
             )
         """.trimIndent())
 
@@ -103,15 +106,25 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
         db.execSQL("INSERT INTO Roles (RolUsuario, NombreRol) VALUES (2, 'Cliente')")
         db.execSQL("INSERT INTO Usuario (Nombre, Pass, RolUsuario) VALUES ('admin', '1234', 1)")
 
-
         // Cargo los planes de membresia y las actividades disponibles
         // Actividades
         db.execSQL("""
             INSERT INTO Actividad (Nombre, Precio) VALUES
             ('Fútbol', 2000.00),
             ('Natación', 5000.00),
-            ('Musculacion', 1500.00),
-            ('Tenis', 2000.00)
+            ('Musculación', 1500.00),
+            ('Tenis', 2000.00),
+            ('Yoga', 3000.00),
+            ('Pilates', 3200.00),
+            ('Crossfit', 4500.00),
+            ('Zumba', 2500.00),
+            ('Spinning', 2800.00),
+            ('Boxeo', 3500.00),
+            ('Escalada', 6000.00),
+            ('Básquet', 2200.00),
+            ('Vóley', 2100.00),
+            ('Funcional', 4000.00),
+            ('Aqua Gym', 3300.00)
         """.trimIndent())
 
         // Membresias
@@ -122,17 +135,87 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
             ('Semestral', 6, 150000.00),
             ('Anual', 12, 290000.00)
         """.trimIndent())
+
+
+        // Cargo datos para mostrar de mis clientes socios y no socios
+        // Clientes socios
+        db.execSQL("""
+            INSERT INTO Cliente (Nombre, Apellido, TipoDocumento, NumeroDocumento, FechaInscripcion, AptoFisico)
+            VALUES 
+            ('Facundo', 'Pérez', 'DNI', 30123456, '2025-06-01', 1),
+            ('Camila', 'González', 'DNI', 29222333, '2025-06-02', 1),
+            ('Lucas', 'Ramírez', 'DNI', 30999888, '2025-06-03', 1);
+        """.trimIndent())
+
+        db.execSQL("""
+            INSERT INTO Socio (ClienteID, FechaVencimientoCuota)
+            VALUES
+            (1, '2025-07-01'),
+            (2, '2025-09-02'),
+            (3, NULL);
+        """.trimIndent())
+
+        db.execSQL("""
+            INSERT INTO Pago (ClienteID, MembresiaID, ActividadID, Monto, MetodoPago, Cuotas, FechaPago)
+            VALUES 
+            (1, 1, NULL, 30000.00, 'Efectivo', 1, '2025-06-01'),
+            (2, 2, NULL, 80000.00, 'Tarjeta de Crédito', 3, '2025-06-02');
+        """.trimIndent())
+
+        db.execSQL("""
+            INSERT INTO Usuario (Nombre, Pass, RolUsuario)
+            VALUES 
+            ('facundo', 'facundo123', 2),
+            ('camila', 'camila123', 2),
+            ('lucas', 'lucas123', 2);
+        """.trimIndent())
+
+        // Clientes no socios
+        db.execSQL("""
+            INSERT INTO Cliente (Nombre, Apellido, TipoDocumento, NumeroDocumento, FechaInscripcion, AptoFisico)
+            VALUES 
+            ('Sofía', 'Martínez', 'DNI', 33111222, '2025-06-01', 0),
+            ('Matías', 'López', 'DNI', 34455666, '2025-06-02', 1);
+        """.trimIndent())
+
+        db.execSQL("""
+            INSERT INTO NoSocio (ClienteID)
+            VALUES
+            (4),
+            (5);
+        """.trimIndent())
+
+        db.execSQL("""
+            INSERT INTO Pago (ClienteID, MembresiaID, ActividadID, Monto, MetodoPago, Cuotas, FechaPago)
+            VALUES 
+            (4, NULL, 14, 4000.00, 'Efectivo', 1, '2025-06-01'),
+            (5, NULL, 10, 3500.00, 'Efectivo', 1, '2025-06-02'),
+            (4, NULL, 8, 2500.00, 'Efectivo', 1, '2025-06-05'),
+            (5, NULL, 11, 6000.00, 'Efectivo', 1, '2025-06-05'),
+            (4, NULL, 15, 3300.00, 'Efectivo', 1, '2025-06-06'),
+            (5, NULL, 4, 2000.00, 'Efectivo', 1, '2025-06-07');
+        """.trimIndent())
+
+        db.execSQL("""
+            INSERT INTO Usuario (Nombre, Pass, RolUsuario)
+            VALUES 
+            ('sofia', 'sofia123', 2),
+            ('matias', 'matias123', 2);
+        """.trimIndent())
+
     }
+
+
 
     // OnUpgrade  -  En caso de nueva version para actualizar mi base de datos borro lo anterior
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS Pago")
         db.execSQL("DROP TABLE IF EXISTS PlanMembresia")
         db.execSQL("DROP TABLE IF EXISTS Actividad")
+        db.execSQL("DROP TABLE IF EXISTS Usuario")
         db.execSQL("DROP TABLE IF EXISTS NoSocio")
         db.execSQL("DROP TABLE IF EXISTS Socio")
         db.execSQL("DROP TABLE IF EXISTS Cliente")
-        db.execSQL("DROP TABLE IF EXISTS Usuario")
         db.execSQL("DROP TABLE IF EXISTS Roles")
         onCreate(db)
     }
@@ -166,32 +249,159 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
         }
     }
 
+    // FUNCIONES PARA OBTENER LISTAS DE LA BASE DE DATOS
+    // OBTENER PLANES
+    fun obtenerPlanes(): List<PlanesDataClass> {
+        val db = readableDatabase
+        val lista = mutableListOf<PlanesDataClass>()
+        val cursor = db.rawQuery("SELECT MembresiaId, PlanMembresia, Meses, Precio FROM PlanMembresia", null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val id = cursor.getInt(0)
+                val nombre = cursor.getString(1)
+                val meses = cursor.getInt(2)
+                val precio = cursor.getDouble(3)
+                lista.add(PlanesDataClass(id, nombre, meses, precio))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return lista
+    }
+
+    // OBTENER ACTIVIDADES
+    fun obtenerActividades(): List<ActividadesDataClass> {
+        val db = readableDatabase
+        val lista = mutableListOf<ActividadesDataClass>()
+        val cursor = db.rawQuery("SELECT ActividadID, Nombre, Precio FROM Actividad", null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val id = cursor.getInt(0)
+                val nombre = cursor.getString(1)
+                val precio = cursor.getDouble(2)
+                lista.add(ActividadesDataClass(id, nombre, precio))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return lista
+    }
+
+    // OBTENER DATOS DE LOS CLIENTES
+    fun obtenerClientes(filtro: String = "", soloCuotaVencida: Boolean = false): List<ClientesDataClass> {
+        val db = this.readableDatabase
+        val listaClientes = mutableListOf<ClientesDataClass>()
+
+        // Primero convierto el string ingresado en una lista de palabras
+        val palabras = filtro.trim().split("\\s+".toRegex()).filter { it.isNotEmpty() }
+
+        // Construcción del WHERE dinámico
+        val whereParts = mutableListOf<String>()
+        val whereArgs = mutableListOf<String>()
+
+        // Para la construccion del where dinamico genero donde:
+        // 1) Genero tantas sentencias c.Nombre LIKE ? OR c.Apellido LIKE... como palabras ponga en el buscador
+        // 2) Genero tantos argumentos para todos los ? (seria cada uno 3 veces para buscar en Nombre, Apellido y NroDNI)
+        // 3) Le coloco al argumento el signo % para que haga la busqueda like
+        if (palabras.isNotEmpty()) {
+            palabras.forEach { palabra ->
+                whereParts.add("""
+                (c.Nombre LIKE ? OR c.Apellido LIKE ? OR CAST(c.NumeroDocumento AS TEXT) LIKE ?)
+            """.trimIndent())
+                repeat(3) { whereArgs.add("%$palabra%") }
+            }
+        }
+
+        // Genero el argumento Where si lo que quiero listar son cuotas vencidas
+        if (soloCuotaVencida) {
+            whereParts.add("""
+            s.SocioID IS NOT NULL AND 
+            (s.FechaVencimientoCuota IS NULL OR date(s.FechaVencimientoCuota) < date('now'))
+            """.trimIndent())
+        }
+
+        // Le agrego el argumento WHERE si es que le puse filtros, sino, no pone nada
+        val whereClause = if (whereParts.isNotEmpty()) {
+            "WHERE ${whereParts.joinToString(" AND ")}"
+        } else {
+            ""
+        }
+
+        // Con lo armado genero el argumento de busqueda
+        val query = """
+            SELECT 
+                c.ClienteID,
+                c.Nombre, 
+                c.Apellido, 
+                c.TipoDocumento, 
+                c.NumeroDocumento, 
+                CASE 
+                    WHEN s.SocioID IS NOT NULL THEN 1
+                    ELSE 0
+                END AS EsSocio,
+                s.FechaVencimientoCuota
+            FROM Cliente c
+            LEFT JOIN Socio s ON c.ClienteID = s.ClienteID
+            $whereClause
+            ORDER BY c.Apellido ASC, c.Nombre ASC
+            """.trimIndent()
+
+        val cursor = db.rawQuery(query, whereArgs.toTypedArray())
+
+        if (cursor.moveToFirst()) {
+            do {
+                val clienteID = cursor.getInt(0)
+                val nombre = cursor.getString(1)
+                val apellido = cursor.getString(2)
+                val tipoDoc = cursor.getString(3)
+                val dni = cursor.getInt(4)
+                val esSocio = cursor.getInt(5) == 1
+                val venceCuota = if (!cursor.isNull(6)) cursor.getString(6) else null
+
+                listaClientes.add(
+                    ClientesDataClass(
+                        clienteID,
+                        nombre,
+                        apellido,
+                        tipoDoc,
+                        dni,
+                        esSocio,
+                        venceCuota
+                    )
+                )
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return listaClientes
+    }
+
+
+
+
+    // FUNCIONES PARA HACER REGISTROS EN MI BASE DE DATOS
     // REGISTRO DE NUEVO CLIENTE TIPO SOCIO O NO SOCIO
     fun registrarCliente(
         nombre: String,
         apellido: String,
         tipoDoc: String,
         nroDoc: Int,
-        fechaNac: String,
         fechaInscripcion: String,
         aptoFisico: Boolean,
-        esSocio: Boolean,
-        fechaVencimientoCuota: String = ""
+        esSocio: Boolean
     ): Boolean {
         val db = writableDatabase
         db.beginTransaction()
         return try {
             val stmt = db.compileStatement("""
-            INSERT INTO Cliente (Nombre, Apellido, TipoDocumento, NumeroDocumento, FechaNacimiento, FechaInscripcion, AptoFisico)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO Cliente (Nombre, Apellido, TipoDocumento, NumeroDocumento, FechaInscripcion, AptoFisico)
+            VALUES (?, ?, ?, ?, ?, ?)
         """.trimIndent())
             stmt.bindString(1, nombre)
             stmt.bindString(2, apellido)
             stmt.bindString(3, tipoDoc)
             stmt.bindLong(4, nroDoc.toLong())
-            stmt.bindString(5, fechaNac)
-            stmt.bindString(6, fechaInscripcion)
-            stmt.bindLong(7, if (aptoFisico) 1 else 0)
+            stmt.bindString(5, fechaInscripcion)
+            stmt.bindLong(6, if (aptoFisico) 1 else 0)
             stmt.executeInsert()
 
             val clienteID = db.rawQuery("SELECT last_insert_rowid()", null).use {
@@ -200,12 +410,8 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
             }
 
             if (esSocio) {
-                val socioStmt = db.compileStatement("""
-                INSERT INTO Socio (ClienteID, FechaVencimientoCuota, Activo)
-                VALUES (?, ?, 1)
-            """.trimIndent())
+                val socioStmt = db.compileStatement("INSERT INTO Socio (ClienteID) VALUES (?)")
                 socioStmt.bindLong(1, clienteID.toLong())
-                socioStmt.bindString(2, fechaVencimientoCuota)
                 socioStmt.executeInsert()
             } else {
                 val noSocioStmt = db.compileStatement("INSERT INTO NoSocio (ClienteID) VALUES (?)")

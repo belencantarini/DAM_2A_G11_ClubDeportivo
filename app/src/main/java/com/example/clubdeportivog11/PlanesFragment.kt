@@ -1,59 +1,81 @@
 package com.example.clubdeportivog11
-
 import android.os.Bundle
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
+import androidx.recyclerview.widget.RecyclerView
+import com.example.clubdeportivog11.models.PlanesDataClass
+import com.example.clubdeportivog11.adapters.PlanesAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.clubdeportivog11.adapters.ActividadesAdapter
+import com.example.clubdeportivog11.models.ActividadesDataClass
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [PlanesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class PlanesFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_planes, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PlanesFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PlanesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val btnPlanes = view.findViewById<LinearLayout>(R.id.btnVerPlanes)
+        val verPlanes = view.findViewById<LinearLayout>(R.id.verPlanes)
+        val btnActividades = view.findViewById<LinearLayout>(R.id.btnVerActividades)
+        val verActividades = view.findViewById<LinearLayout>(R.id.verActividades)
+        val cerrarPlanes = view.findViewById<Button>(R.id.btnCerrarPlanes)
+        val cerrarActividades = view.findViewById<Button>(R.id.btnCerrarActividades)
+        val menuPlanesyActividades = view.findViewById<LinearLayout>(R.id.menuPlanesyActividades)
+
+        btnPlanes.setOnClickListener {
+            verPlanes.visibility = View.VISIBLE
+            verActividades.visibility = View.GONE
+            menuPlanesyActividades.gravity = Gravity.CENTER_HORIZONTAL
+        }
+
+        btnActividades.setOnClickListener {
+            verActividades.visibility = View.VISIBLE
+            verPlanes.visibility = View.GONE
+            menuPlanesyActividades.gravity = Gravity.CENTER_HORIZONTAL
+        }
+
+        cerrarPlanes.setOnClickListener {
+            verPlanes.visibility = View.GONE
+            menuPlanesyActividades.gravity = Gravity.CENTER
+        }
+
+        cerrarActividades.setOnClickListener {
+            verActividades.visibility = View.GONE
+            menuPlanesyActividades.gravity = Gravity.CENTER
+        }
+
+
+        // Conectamos con la base de datos
+        val dbHelper = ClubDBHelper(requireContext())
+
+        // Solicitamos los datos de los planes y las actividades a la base de datos
+        val listaPlanesSocios = dbHelper.obtenerPlanes()
+        val listaActividadesNoSocios = dbHelper.obtenerActividades()
+
+        // Configuramos la RECICLER VIEW para PLANES y ACTIVIDADES
+
+        val planesReciclerView = view.findViewById<RecyclerView>(R.id.recyclerViewPlanes)
+        planesReciclerView.layoutManager = LinearLayoutManager(requireContext())
+        planesReciclerView.adapter = PlanesAdapter(listaPlanesSocios)
+
+        val actividadesReciclerView = view.findViewById<RecyclerView>(R.id.recyclerViewActividades)
+        actividadesReciclerView.layoutManager = LinearLayoutManager(requireContext())
+        actividadesReciclerView.adapter = ActividadesAdapter(listaActividadesNoSocios)
+
     }
 }
+

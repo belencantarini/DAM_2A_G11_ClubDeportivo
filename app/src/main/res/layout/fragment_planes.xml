@@ -28,22 +28,20 @@
 
         <!-- Menu de planes y actividades -->
         <LinearLayout
+            android:id="@+id/menuPlanesyActividades"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:orientation="vertical"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             >
             <!-- Capa contenedora del menú -->
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
                 android:background="@drawable/shape_transp_navy_blue_round_corners"
                 >
-
                 <!-- Gris de 2 x 3 -->
                 <GridLayout
                     android:layout_width="wrap_content"
@@ -112,175 +110,128 @@
                             android:textAlignment="center"
                             android:textSize="18sp"/>
                     </LinearLayout>
-
-
                 </GridLayout>
+            </LinearLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:background="@drawable/shape_transp_navy_blue_round_corners"
-                >
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginVertical="12dp"
+                android:background="@drawable/shape_transp_navy_blue_round_corners">
 
+                <!-- Seccion de planes listados (no visible) -->
                 <LinearLayout
                     android:id="@+id/verPlanes"
                     android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="12dp"
-                    android:gravity="center"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:orientation="vertical">
-
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <!-- Titulo de mi seccion -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/textTituloPlanes"
                         android:text="Planes para Socios"
                         android:textColor="@color/white"
                         android:textStyle="bold"
                         android:textSize="18sp"
                         android:padding="10dp">
                     </TextView>
-
-                    <LinearLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:orientation="horizontal">
-
-                        <!-- Columna Izquierda: Etiquetas -->
+                        android:layout_height="match_parent">
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:orientation="vertical">
-
-                            <TextView android:text="Mensual" style="@style/LabelStyle"/>
-                            <TextView android:text="Trimestral" style="@style/LabelStyle"/>
-                            <TextView android:text="Anual" style="@style/LabelStyle"/>
-
+                            android:padding="12dp"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toTopOf="@+id/btnCerrarPlanes">
+                            <!-- Recycler View -->
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/recyclerViewPlanes"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:paddingVertical="20dp"
+                                android:contentDescription="Listado de planes para socios" />
                         </LinearLayout>
-
-                        <!-- Columna Derecha: Datos del Cliente -->
-                        <LinearLayout
-                            android:layout_width="0dp"
+                        <!-- Boton para cerrar seccion-->
+                        <Button
+                            android:id="@+id/btnCerrarPlanes"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="3"
-                            android:orientation="vertical">
-
-                            <TextView android:text="$ 40000" style="@style/DataStyle"/>
-                            <TextView android:text="$ 70000" style="@style/DataStyle"/>
-                            <TextView android:text="$ 250000" style="@style/DataStyle"/>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <!-- Boton -->
-                    <Button
-                        android:id="@+id/btnCerrarPlanes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Cerrar"
-                        android:textSize="16sp"
-                        android:backgroundTint="@color/sky_blue"
-                        android:layout_marginTop="10dp"/>
-
+                            android:text="Cerrar"
+                            android:backgroundTint="@color/sky_blue"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
 
+                <!-- Seccion de planes actividades (no visible) -->
                 <LinearLayout
                     android:id="@+id/verActividades"
                     android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="12dp"
-                    android:gravity="center"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:orientation="vertical">
-
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <!-- Titulo de mi seccion -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Actividades"
+                        android:id="@+id/textTituloActividades"
+                        android:text="Actividades para No Socios"
                         android:textColor="@color/white"
                         android:textStyle="bold"
                         android:textSize="18sp"
                         android:padding="10dp">
                     </TextView>
-
-                    <LinearLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:orientation="horizontal">
-
-                        <!-- Columna Izquierda: Etiquetas -->
+                        android:layout_height="match_parent">
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:orientation="vertical">
+                            android:padding="12dp"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toTopOf="@+id/btnCerrarActividades">
 
-                            <TextView android:text="Pileta" style="@style/LabelStyle"/>
-                            <TextView android:text="Futbol" style="@style/LabelStyle"/>
-                            <TextView android:text="Voley" style="@style/LabelStyle"/>
-                            <TextView android:text="Tenis" style="@style/LabelStyle"/>
-
+                            <!-- Recycler View -->
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/recyclerViewActividades"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:paddingVertical="20dp"
+                                android:contentDescription="Listado de actividades para no socios"/>
                         </LinearLayout>
-
-                        <!-- Columna Derecha: Datos del Cliente -->
-                        <LinearLayout
-                            android:layout_width="0dp"
+                        <!-- Boton para cerrar seccion-->
+                        <Button
+                            android:id="@+id/btnCerrarActividades"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="3"
-                            android:orientation="vertical">
-
-                            <TextView android:text="$ 5000" style="@style/DataStyle"/>
-                            <TextView android:text="$ 4000" style="@style/DataStyle"/>
-                            <TextView android:text="$ 3000" style="@style/DataStyle"/>
-                            <TextView android:text="$ 4000" style="@style/DataStyle"/>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <!-- Boton -->
-                    <Button
-                        android:id="@+id/btnCerrarActividades"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Cerrar"
-                        android:textSize="16sp"
-                        android:backgroundTint="@color/sky_blue"
-                        android:layout_marginTop="10dp"/>
-
+                            android:text="Cerrar"
+                            android:backgroundTint="@color/sky_blue"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
+            </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
 
     <!-- Botón abajo del todo -->

@@ -9,5 +9,7 @@
     <color name="red">#D32F2F</color> <!-- Rojo  -->
     <color name="black_50_transparent">#80000000</color>
     <color name="black_70_transparent">#B3000000</color>
-    <color name="navy_blue_70_transparent">#B31a265a</color>
+    <color name="navy_blue_70_transparent">#CC1a265a</color>
+    <color name="green">#4CAF50</color>
+    <color name="teal_700">#018786</color>
 </resources>
