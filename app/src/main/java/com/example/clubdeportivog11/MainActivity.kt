@@ -9,10 +9,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import java.text.Normalizer
+import java.util.Locale
+
+
+// Configuramos una funcion para ignorar acentos que funcionara en toda la base
+fun String.normalizar(): String {
+    val normalizada = Normalizer.normalize(this, Normalizer.Form.NFD)
+    return normalizada.replace("[\\p{InCombiningDiacriticalMarks}]".toRegex(), "")
+        .lowercase(Locale.getDefault())
+}
 
 class MainActivity : AppCompatActivity() {
 
     private var menuAbierto = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,4 +94,7 @@ class MainActivity : AppCompatActivity() {
         // Además de ir a la sección, cerramos el menú si está abierto
         closeMenu()
     }
+
+
+
 }

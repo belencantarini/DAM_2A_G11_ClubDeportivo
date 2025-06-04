@@ -44,13 +44,21 @@
                 android:hint="Ingrese nombre o DNI"
                 android:textColor="@color/black" />
 
-            <ImageView
+            <LinearLayout
                 android:id="@+id/iconoBuscar"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:src="@android:drawable/ic_menu_search"
-                android:contentDescription="Buscar"
-                android:paddingHorizontal="10dp"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/shape_blue_round_corners"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:src="@android:drawable/ic_menu_search"
+                    android:paddingHorizontal="10dp"/>
+            </LinearLayout>
         </LinearLayout>
 
 

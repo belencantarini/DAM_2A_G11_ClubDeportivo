@@ -41,8 +41,12 @@ class ClientesAdapter (
         val cliente = clientes[position]
         holder.txNombre.text =  "${cliente.apellido} ${cliente.nombre}"
         holder.txDNI.text =  "${cliente.tipoDoc}: ${cliente.dni}"
-        holder.txSocio.text = "${if (cliente.esSocio) "Socio" else "No Socio"}"
-        
+        holder.txSocio.text = if (cliente.esSocio) {
+            "Socio - " +
+                    (if(cliente.fechaVencimientoCuota.isNullOrEmpty()) "Adeuda pago"
+                    else "Venc.: " + cliente.fechaVencimientoCuota)} else {"No Socio"}
+
+
         // Mostrar - Ocultar botones (esto lo configuramos en el fragment correspondiente)
         holder.btnVer.visibility = if (configBotones.mostrarVer) View.VISIBLE else View.GONE
         holder.btnPagar.visibility = if (configBotones.mostrarIrAPagar) View.VISIBLE else View.GONE

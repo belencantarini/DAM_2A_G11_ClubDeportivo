@@ -292,40 +292,16 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
         val db = this.readableDatabase
         val listaClientes = mutableListOf<ClientesDataClass>()
 
-        // Primero convierto el string ingresado en una lista de palabras
-        val palabras = filtro.trim().split("\\s+".toRegex()).filter { it.isNotEmpty() }
-
-        // Construcción del WHERE dinámico
-        val whereParts = mutableListOf<String>()
-        val whereArgs = mutableListOf<String>()
-
-        // Para la construccion del where dinamico genero donde:
-        // 1) Genero tantas sentencias c.Nombre LIKE ? OR c.Apellido LIKE... como palabras ponga en el buscador
-        // 2) Genero tantos argumentos para todos los ? (seria cada uno 3 veces para buscar en Nombre, Apellido y NroDNI)
-        // 3) Le coloco al argumento el signo % para que haga la busqueda like
-        if (palabras.isNotEmpty()) {
-            palabras.forEach { palabra ->
-                whereParts.add("""
-                (c.Nombre LIKE ? OR c.Apellido LIKE ? OR CAST(c.NumeroDocumento AS TEXT) LIKE ?)
-            """.trimIndent())
-                repeat(3) { whereArgs.add("%$palabra%") }
-            }
-        }
+        var whereClause = ""
 
         // Genero el argumento Where si lo que quiero listar son cuotas vencidas
         if (soloCuotaVencida) {
-            whereParts.add("""
+            whereClause = ("""WHERE
             s.SocioID IS NOT NULL AND 
             (s.FechaVencimientoCuota IS NULL OR date(s.FechaVencimientoCuota) < date('now'))
             """.trimIndent())
         }
 
-        // Le agrego el argumento WHERE si es que le puse filtros, sino, no pone nada
-        val whereClause = if (whereParts.isNotEmpty()) {
-            "WHERE ${whereParts.joinToString(" AND ")}"
-        } else {
-            ""
-        }
 
         // Con lo armado genero el argumento de busqueda
         val query = """
@@ -346,7 +322,7 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
             ORDER BY c.Apellido ASC, c.Nombre ASC
             """.trimIndent()
 
-        val cursor = db.rawQuery(query, whereArgs.toTypedArray())
+        val cursor = db.rawQuery(query, null)
 
         if (cursor.moveToFirst()) {
             do {
@@ -372,6 +348,24 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
             } while (cursor.moveToNext())
         }
         cursor.close()
+
+
+        if (filtro.isNotEmpty()) {
+            val palabrasFiltro = filtro.normalizar().split("\\s+".toRegex())
+
+            val listaFiltrada = listaClientes.filter { cliente ->
+                val nombre = cliente.nombre.normalizar()
+                val apellido = cliente.apellido.normalizar()
+                val dni = cliente.dni.toString()
+
+                // Cada palabra debe aparecer en al menos uno de los campos
+                palabrasFiltro.all { palabra ->
+                    nombre.contains(palabra) || apellido.contains(palabra) || dni.contains(palabra)
+                }
+            }
+
+            return listaFiltrada
+        }
         return listaClientes
     }
 

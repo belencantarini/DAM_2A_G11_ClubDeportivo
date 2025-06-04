@@ -13,11 +13,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/botonesRegistrarCliente">
+        app:layout_constraintBottom_toTopOf="@+id/botonesVencimientoCliente">
 
         <!-- Título -->
         <TextView
-            android:id="@+id/textTituloBuscar"
+            android:id="@+id/textTituloVencimientosSocios"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cuotas Vencidas"
@@ -25,57 +25,18 @@
             android:textStyle="bold"
             android:textColor="@color/white"
             android:layout_marginBottom="16dp"/>
-        <!-- Cuotas vencidas -->
 
-        <LinearLayout
+        <!-- Recycler View para mis clientes socios con cuota vencida-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewClientesVencimientos"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:background="@drawable/shape_white_round_corners"
-            android:padding="8dp"
-            app:layout_constraintTop_toBottomOf="@id/textTituloBuscar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:layout_height="match_parent"/>
 
-            <TextView
-                android:id="@+id/textResultado"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Nombre: ---\nDNI: --- \nSocio"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/layoutBusqueda"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-            <Button
-                android:layout_width="60dp"
-                android:layout_height="50dp"
-                android:text="Ir a pagar"
-                android:padding="4dp"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                android:backgroundTint="@color/sky_blue"
-                />
-
-            <Button
-                android:layout_width="60dp"
-                android:layout_height="50dp"
-                android:text="Dar baja"
-                android:padding="4dp"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                android:backgroundTint="@color/red"
-                />
-
-        </LinearLayout>
     </LinearLayout>
 
     <!-- Botón abajo del todo -->
     <LinearLayout
-        android:id="@+id/botonesRegistrarCliente"
+        android:id="@+id/botonesVencimientoCliente"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -86,7 +47,7 @@
         android:layout_marginBottom="60dp">
 
         <Button
-            android:id="@+id/btnVolverRC"
+            android:id="@+id/btnVolverVenc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Volver"
