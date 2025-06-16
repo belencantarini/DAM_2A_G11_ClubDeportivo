@@ -326,7 +326,7 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
 
         if (cursor.moveToFirst()) {
             do {
-                val clienteID = cursor.getInt(0)
+                val clienteID = cursor.getLong(0)
                 val nombre = cursor.getString(1)
                 val apellido = cursor.getString(2)
                 val tipoDoc = cursor.getString(3)
@@ -382,10 +382,10 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
         fechaInscripcion: String,
         aptoFisico: Boolean,
         esSocio: Boolean
-    ): Boolean {
+    ): Long {
         val db = writableDatabase
         db.beginTransaction()
-        return try {
+        try {
             val stmt = db.compileStatement("""
             INSERT INTO Cliente (Nombre, Apellido, TipoDocumento, NumeroDocumento, FechaInscripcion, AptoFisico)
             VALUES (?, ?, ?, ?, ?, ?)
@@ -395,28 +395,28 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
             stmt.bindString(3, tipoDoc)
             stmt.bindLong(4, nroDoc.toLong())
             stmt.bindString(5, fechaInscripcion)
-            stmt.bindLong(6, if (aptoFisico) 1 else 0)
-            stmt.executeInsert()
+            stmt.bindLong(6, if (aptoFisico) 1L else 0L)
 
-            val clienteID = db.rawQuery("SELECT last_insert_rowid()", null).use {
-                it.moveToFirst()
-                it.getInt(0)
+            // Ejecuto el insert y capturo el cliente ID al mismo tiempo
+            val clienteID = stmt.executeInsert()
+            if (clienteID < 0L) {
+                return -1L
             }
 
             if (esSocio) {
                 val socioStmt = db.compileStatement("INSERT INTO Socio (ClienteID) VALUES (?)")
-                socioStmt.bindLong(1, clienteID.toLong())
+                socioStmt.bindLong(1, clienteID)
                 socioStmt.executeInsert()
             } else {
                 val noSocioStmt = db.compileStatement("INSERT INTO NoSocio (ClienteID) VALUES (?)")
-                noSocioStmt.bindLong(1, clienteID.toLong())
+                noSocioStmt.bindLong(1, clienteID)
                 noSocioStmt.executeInsert()
             }
 
             db.setTransactionSuccessful()
-            true
+            return clienteID
         } catch (e: Exception) {
-            false
+            return -1L
         } finally {
             db.endTransaction()
         }
@@ -424,7 +424,7 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
 
     // INGRESAR EL PAGO DE UNA ACTIVIDAD O UNA MEMBRESIA
     fun ingresarPago(
-        clienteID: Int,
+        clienteID: Long,
         monto: Double,
         metodoPago: String,
         cuotas: Int,

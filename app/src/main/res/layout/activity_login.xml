@@ -83,6 +83,7 @@
                 android:hint="Usuario"
                 android:textColor="@color/black"
                 android:padding="12dp"
+                android:textSize="18sp"
                 android:background="@drawable/shape_white_round_corners"/>
 
             <EditText
@@ -93,6 +94,8 @@
                 android:inputType="textPassword"
                 android:textColor="@color/black"
                 android:padding="12dp"
+                android:textSize="18sp"
+                android:textStyle="normal"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/shape_white_round_corners"/>
 

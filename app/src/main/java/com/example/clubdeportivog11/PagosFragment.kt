@@ -1,33 +1,23 @@
 package com.example.clubdeportivog11
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.clubdeportivog11.adapters.ClientesAdapter
+import com.example.clubdeportivog11.models.BotonesCardsDataClass
+import com.example.clubdeportivog11.models.ClientesDataClass
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [PagosFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class PagosFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,23 +27,73 @@ class PagosFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_pagos, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PagosFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PagosFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Configuramos los botones de mis cards de clientes (solo muestro boton ver)
+        val configBotones = BotonesCardsDataClass(mostrarVerHistorial = true, mostrarIrAPagar = true)
+
+        // Conectamos con la base de datos
+        val dbHelper = ClubDBHelper(requireContext())
+
+
+        // Solicitamos los datos de los clientes a la base de datos
+        val listaClientesCompleta = dbHelper.obtenerClientes()
+
+        // Configuramos la RECICLER VIEW para los clientes
+        val clientesPagosReciclerView = view.findViewById<RecyclerView>(R.id.recyclerViewClientesBusquedaPagos)
+
+        fun mostrarClientes(lista: List<ClientesDataClass>, configBotones: BotonesCardsDataClass, recyclerView: RecyclerView) {
+            clientesPagosReciclerView.layoutManager = LinearLayoutManager(requireContext())
+            clientesPagosReciclerView.adapter = ClientesAdapter(lista, configBotones,
+                onPagarClick = { cliente ->
+                    // Navegar a perfil del cliente
+                },
+                onHistorialClick = { cliente ->
+                    // Navegar a perfil del cliente
+                })
+        }
+
+        mostrarClientes(listaClientesCompleta, configBotones, clientesPagosReciclerView)
+
+
+        // Campo de texto para buscar clientes
+        val etBuscarPagos = view.findViewById<EditText>(R.id.etBuscarClientePagos)
+
+        // Configuramos el boton para buscar clientes por nombre, apellido o numero de documento
+        view.findViewById<LinearLayout>(R.id.iconoBuscarPagos).setOnClickListener {
+            val filtroBusqueda = etBuscarPagos.text.toString()
+            val listaClientesFiltrada = dbHelper.obtenerClientes(filtroBusqueda)
+            mostrarClientes(listaClientesFiltrada, configBotones, clientesPagosReciclerView)
+        }
+
+        // Configuramos para que haga la busqueda con cada letra que ingreso al campo
+        etBuscarPagos.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // No lo usamos, pero hay que ponerlo vacío
             }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val filtroBusqueda = s.toString()
+                val listaClientesFiltrada = dbHelper.obtenerClientes(filtroBusqueda)
+                mostrarClientes(listaClientesFiltrada, configBotones, clientesPagosReciclerView)
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // Tampoco lo usamos
+            }
+        })
+
+
+
+        // Botón Volver
+        val btnVolver = view.findViewById<Button>(R.id.btnVolverPagos)
+        btnVolver.setOnClickListener {
+            // Cierro el fragmento y vuelvo a la pila que genero al punto de fragmentoInicio
+            parentFragmentManager.popBackStack("fragmentoInicio", 0)
+            (activity as? MainActivity)?.cambiarFondo(R.drawable.bg_bolsas)
+        }
     }
+
+
 }

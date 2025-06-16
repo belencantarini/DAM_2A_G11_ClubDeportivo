@@ -1,10 +1,13 @@
 package com.example.clubdeportivog11
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,20 +49,50 @@ class ClientesFragment : Fragment() {
             clientesListaReciclerView.layoutManager = LinearLayoutManager(requireContext())
             clientesListaReciclerView.adapter = ClientesAdapter(lista, configBotones,
                 onVerClick = { cliente ->
-                // Navegar a perfil del cliente
+                    val verClientePerfil = PerfilClienteFragment().apply {
+                        arguments = Bundle().apply {
+                            putLong("clienteId", cliente.clienteID)
+                        }
+                    }
+                    (activity as? MainActivity)?.irASeccion(verClientePerfil)
             })
         }
 
         mostrarClientes(listaClientesCompleta, configBotones, clientesListaReciclerView)
 
+        // Campo de texto para buscar clientes
+        val etBuscar = view.findViewById<EditText>(R.id.etBuscarCliente)
+
         // Configuramos el boton para buscar clientes por nombre, apellido o numero de documento
         view.findViewById<LinearLayout>(R.id.iconoBuscar).setOnClickListener {
-
-            val filtroBusqueda = view.findViewById<EditText>(R.id.etBuscarCliente).text.toString()
-
+            val filtroBusqueda = etBuscar.text.toString()
             val listaClientesFiltrada = dbHelper.obtenerClientes(filtroBusqueda)
-
             mostrarClientes(listaClientesFiltrada, configBotones, clientesListaReciclerView)
+        }
+
+        // Configuramos para que haga la busqueda con cada letra que ingreso al campo
+        etBuscar.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // No lo usamos, pero hay que ponerlo vacío
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val filtroBusqueda = s.toString()
+                val listaClientesFiltrada = dbHelper.obtenerClientes(filtroBusqueda)
+                mostrarClientes(listaClientesFiltrada, configBotones, clientesListaReciclerView)
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // Tampoco lo usamos
+            }
+        })
+
+        // Botón Volver
+        val btnVolver = view.findViewById<Button>(R.id.btnVolverBC)
+        btnVolver.setOnClickListener {
+            // Cierro el fragmento y vuelvo a la pila que genero al punto de fragmentoInicio
+            parentFragmentManager.popBackStack("fragmentoInicio", 0)
+            (activity as? MainActivity)?.cambiarFondo(R.drawable.bg_bolsas)
         }
     }
 }

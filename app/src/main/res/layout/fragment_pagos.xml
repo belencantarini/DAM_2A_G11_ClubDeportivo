@@ -13,11 +13,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/botonesRegistrarCliente">
+        app:layout_constraintBottom_toTopOf="@+id/volverListaPagar">
 
         <!-- Título -->
         <TextView
-            android:id="@+id/textTituloBuscar"
+            android:id="@+id/textTituloBuscarPagos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Registrar Pagos"
@@ -26,87 +26,52 @@
             android:textColor="@color/white"
             android:layout_marginBottom="16dp"/>
 
-    <!-- Campo de búsqueda con lupa -->
-    <LinearLayout
-        android:id="@+id/layoutBusqueda"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@drawable/shape_white_round_corners"
-        android:padding="8dp"
-        app:layout_constraintTop_toBottomOf="@id/textTituloBuscar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <EditText
-            android:id="@+id/etBuscarCliente"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:hint="Ingrese nombre o DNI"
-            android:textColor="@color/black" />
-
-        <ImageView
-            android:id="@+id/iconoBuscar"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:src="@android:drawable/ic_menu_search"
-            android:contentDescription="Buscar"
-            android:paddingHorizontal="10dp"/>
-    </LinearLayout>
-
-    <!-- Resultados de búsqueda -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:background="@drawable/shape_white_round_corners"
-        android:padding="8dp"
-        app:layout_constraintTop_toBottomOf="@id/textTituloBuscar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp" >
-
-        <TextView
-            android:id="@+id/textResultado"
-            android:layout_width="0dp"
+        <!-- Campo de búsqueda con lupa -->
+        <LinearLayout
+            android:id="@+id/layoutBusquedaPagos"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Nombre: ---\nDNI: --- \nSocio"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@id/layoutBusqueda"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:orientation="horizontal"
+            android:background="@drawable/shape_white_round_corners"
+            android:padding="8dp">
 
-        <Button
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:text="Historial"
-            android:textSize="12sp"
-            android:padding="4dp"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/sky_blue"
-            />
+            <EditText
+                android:id="@+id/etBuscarClientePagos"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="Ingrese nombre o DNI"
+                android:textColor="@color/black" />
 
-        <Button
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:text="Ir a pagar"
-            android:textSize="12sp"
-            android:padding="4dp"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/sky_blue"
-            />
+            <LinearLayout
+                android:id="@+id/iconoBuscarPagos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/shape_blue_round_corners"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:src="@android:drawable/ic_menu_search"
+                    android:paddingHorizontal="10dp"/>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
+        <!-- Recycler View para mis clientes -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewClientesBusquedaPagos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingVertical="20dp"/>
+    </LinearLayout>
 
     <!-- Botón abajo del todo -->
     <LinearLayout
-        android:id="@+id/botonesRegistrarCliente"
+        android:id="@+id/volverListaPagar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -116,7 +81,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="60dp">
         <Button
-            android:id="@+id/btnVolverRC"
+            android:id="@+id/btnVolverPagos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Volver"

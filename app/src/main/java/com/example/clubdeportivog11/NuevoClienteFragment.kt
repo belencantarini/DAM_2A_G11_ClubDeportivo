@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.RadioGroup
 import android.widget.Spinner
 import android.widget.Toast
@@ -24,6 +25,15 @@ import java.util.Locale
 
 class NuevoClienteFragment : Fragment() {
 
+    private lateinit var etNombre: EditText
+    private lateinit var etApellido: EditText
+    private lateinit var spinnerTipoDoc: Spinner
+    private lateinit var etNumeroDoc: EditText
+    private lateinit var checkAptoFisico: CheckBox
+    private lateinit var radioGroupTipo: RadioGroup
+    private lateinit var btnRegistrar: Button
+    private lateinit var btnVolver: Button
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,8 +47,19 @@ class NuevoClienteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        // Configuramos todas las variables
+        etNombre = view.findViewById(R.id.etNombre)
+        etApellido = view.findViewById(R.id.etApellido)
+        spinnerTipoDoc = view.findViewById(R.id.spinnerTipoDocumento)
+        etNumeroDoc = view.findViewById(R.id.etNumeroDocumento)
+        checkAptoFisico= view.findViewById(R.id.checkAptoFisico)
+        radioGroupTipo = view.findViewById(R.id.radioTipoCliente)
+        btnRegistrar = view.findViewById(R.id.btnRegistrarCliente)
+        btnVolver = view.findViewById(R.id.btnVolverRC)
+
+
+
         // Configurar spinner de tipos de documento
-        val spinner: Spinner = view.findViewById(R.id.spinnerTipoDocumento)
         val tiposDocumento = listOf("DNI", "Pasaporte", "Cédula")
         val adapter = ArrayAdapter(
             requireContext(),
@@ -46,18 +67,17 @@ class NuevoClienteFragment : Fragment() {
             tiposDocumento
         )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = adapter
+        spinnerTipoDoc.adapter = adapter
 
 
         // REGISTRAR CLIENTE
         fun nuevoCliente(){
-            val nombre = view.findViewById<EditText>(R.id.etNombre).text.toString()
-            val apellido = view.findViewById<EditText>(R.id.etApellido).text.toString()
-            val tipoDoc = view.findViewById<Spinner>(R.id.spinnerTipoDocumento).selectedItem.toString()
-            val numeroDocStr  = view.findViewById<EditText>(R.id.etNumeroDocumento).text.toString()
-            val aptoFisico = view.findViewById<CheckBox>(R.id.checkAptoFisico).isChecked
-            val radioGroup = view.findViewById<RadioGroup>(R.id.radioTipoCliente)
-            val tipoCliente = when (radioGroup.checkedRadioButtonId) {
+            val nombre = etNombre.text.toString()
+            val apellido = etApellido.text.toString()
+            val tipoDoc = spinnerTipoDoc.selectedItem.toString()
+            val numeroDocStr  = etNumeroDoc.text.toString()
+            val aptoFisico = checkAptoFisico.isChecked
+            val tipoCliente = when (radioGroupTipo.checkedRadioButtonId) {
                 R.id.radioSocio -> true
                 R.id.radioNoSocio -> false
                 else -> null
@@ -84,7 +104,7 @@ class NuevoClienteFragment : Fragment() {
 
             // Insertar en Cliente
             // Aquí llamás a tu función del ClubDBHelper para insertar:
-            val exito = dbHelper.registrarCliente(
+            val newId = dbHelper.registrarCliente(
                 nombre,
                 apellido,
                 tipoDoc,
@@ -94,26 +114,45 @@ class NuevoClienteFragment : Fragment() {
                 tipoCliente
             )
 
-            if (exito) {
-                Toast.makeText(requireContext(), "Cliente registrado correctamente", Toast.LENGTH_SHORT).show()
-                // Opcional: limpiar campos o navegar a otra pantalla
+            if (newId == -1L) {
+                Toast.makeText(requireContext(),
+                    "Error al registrar cliente, verifique que no exista un cliente ya registrado bajo ese tipo y número de documento.",
+                    Toast.LENGTH_LONG).show()
             } else {
-                Toast.makeText(requireContext(), "Error al registrar cliente", Toast.LENGTH_SHORT).show()
+
+                Toast.makeText(requireContext(), "Nuevo cliente registrado correctamente.", Toast.LENGTH_SHORT).show()
+                // Limpiar campos
+                etNombre.text?.clear()
+                etApellido.text?.clear()
+                spinnerTipoDoc.setSelection(0)
+                etNumeroDoc.text?.clear()
+                checkAptoFisico.isChecked = false
+                radioGroupTipo.clearCheck()
+
+                // Guardo el argumento del cliente Id en el Fragmento PerfilClienteFragment
+                val verClientePerfil = PerfilClienteFragment().apply {
+                    arguments = Bundle().apply {
+                        putLong("clienteId", newId)
+                    }
+                }
+
+                // Le paso el fragmento con los argumentos al FragmentManager con la funcion irASeccion de mi MainActivity
+                (activity as? MainActivity)?.irASeccion(verClientePerfil)
+
             }
         }
 
 
         // (Opcional) Botón Registrar Cliente
-        val btnRegistrarCliente = view.findViewById<Button>(R.id.btnRegistrarCliente)
-        btnRegistrarCliente.setOnClickListener {
+        btnRegistrar.setOnClickListener {
             nuevoCliente()
         }
 
         // Botón Volver
-        val btnVolver = view.findViewById<Button>(R.id.btnVolverRC)
         btnVolver.setOnClickListener {
-            // Cerrar fragmento regresando
-            activity?.onBackPressedDispatcher
+            // Cierro el fragmento y vuelvo a la pila que genero al punto de fragmentoInicio
+            parentFragmentManager.popBackStack("fragmentoInicio", 0)
+            (activity as? MainActivity)?.cambiarFondo(R.drawable.bg_bolsas)
         }
     }
 }

@@ -76,6 +76,18 @@ class PlanesFragment : Fragment() {
         actividadesReciclerView.layoutManager = LinearLayoutManager(requireContext())
         actividadesReciclerView.adapter = ActividadesAdapter(listaActividadesNoSocios)
 
+        // Botón Volver
+        val btnVolver = view.findViewById<Button>(R.id.btnVolverPlanes)
+        btnVolver.setOnClickListener {
+            // Cierro el fragmento y vuelvo a la pila que genero al punto de fragmentoInicio
+            parentFragmentManager.popBackStack("fragmentoInicio", 0)
+            (activity as? MainActivity)?.cambiarFondo(R.drawable.bg_bolsas)
+        }
+
+
+
     }
+
+
 }
 

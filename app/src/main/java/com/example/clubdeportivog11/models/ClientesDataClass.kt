@@ -3,7 +3,7 @@ package com.example.clubdeportivog11.models
 import org.w3c.dom.Text
 
 data class ClientesDataClass(
-    val clienteID: Int,
+    val clienteID: Long,
     val nombre: String,
     val apellido: String,
     val tipoDoc: String,

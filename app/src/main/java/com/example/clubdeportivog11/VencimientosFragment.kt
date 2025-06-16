@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.clubdeportivog11.adapters.ClientesAdapter
@@ -56,5 +57,14 @@ class VencimientosFragment : Fragment() {
         }
 
         mostrarClientes(listaClientesCuotaVencida, configBotones, clientesVencimientosReciclerView)
+
+
+        // Botón Volver
+        val btnVolver = view.findViewById<Button>(R.id.btnVolverVenc)
+        btnVolver.setOnClickListener {
+            // Cierro el fragmento y vuelvo a la pila que genero al punto de fragmentoInicio
+            parentFragmentManager.popBackStack("fragmentoInicio", 0)
+            (activity as? MainActivity)?.cambiarFondo(R.drawable.bg_bolsas)
+        }
     }
 }

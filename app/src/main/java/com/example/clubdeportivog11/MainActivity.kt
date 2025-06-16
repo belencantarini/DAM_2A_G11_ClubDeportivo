@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         val menuButton = findViewById<ImageView>(R.id.btnHamburguesa)
         val menuOverlayContainer = findViewById<FrameLayout>(R.id.menuOverlayContainer)
 
-        // Seteo mi menu el el menuOverlayContainer y luego lo dejo oculto
+        // Seteo mi menu en el menuOverlayContainer y luego lo dejo oculto
         supportFragmentManager.beginTransaction()
             .add(R.id.menuOverlayContainer, MenuFragment())
             .commit()
@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         // Mostrar fragmento con su fondo por defecto
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, InicioFragment())
+            .addToBackStack("fragmentoInicio") //Creo una pila de fragmentos
             .commit()
 
         menuButton.setOnClickListener {
@@ -89,12 +90,20 @@ class MainActivity : AppCompatActivity() {
         cambiarFondo(idFondo)
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragmento)
+            .addToBackStack(null)
             .commit()
 
         // Además de ir a la sección, cerramos el menú si está abierto
         closeMenu()
     }
 
+
+    fun irASeccion(fragmento: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragmento)
+            .addToBackStack(null)
+            .commit()
+    }
 
 
 }
