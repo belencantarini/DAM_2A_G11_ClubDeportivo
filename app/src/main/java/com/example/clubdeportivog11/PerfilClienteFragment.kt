@@ -9,6 +9,11 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isVisible
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.Date
+import java.util.Locale
 
 
 class PerfilClienteFragment : Fragment() {
@@ -66,20 +71,7 @@ class PerfilClienteFragment : Fragment() {
         }
         cursor.close()
 
-        val socioCursor = db.rawQuery(
-            "SELECT FechaVencimientoCuota FROM Socio WHERE ClienteID = ?",
-            arrayOf(clienteId.toString())
-        )
-
-        if (socioCursor.moveToFirst()) {
-            view.findViewById<TextView>(R.id.textTipoCliente).text = "Socio"
-            view.findViewById<TextView>(R.id.textProxVenc).text = socioCursor.getString(0)
-        } else {
-            view.findViewById<TextView>(R.id.textTipoCliente).text = "No Socio"
-            view.findViewById<TextView>(R.id.textProxVenc).text = "-"
-        }
-
-        socioCursor.close()
+        cargarTipoSocio(view)
 
         db.close()
 
@@ -88,6 +80,74 @@ class PerfilClienteFragment : Fragment() {
         btnVolver.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
-        
+    }
+
+    private fun cargarTipoSocio(view: View) {
+        val dbHelper = ClubDBHelper(requireContext())
+        val db = dbHelper.readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT FechaVencimientoCuota FROM Socio WHERE ClienteID = ?",
+            arrayOf(clienteId.toString())
+        )
+
+        val esSocio = cursor.moveToFirst()
+        val fechaVenc = if (esSocio) cursor.getString(0) else null
+        cursor.close()
+
+        if (esSocio) {
+            mostrarSocioUI(view, fechaVenc)
+        } else {
+            mostrarNoSocioUI(view)
+        }
+    }
+
+    private fun mostrarSocioUI(view: View, fechaVenc: String?) = with(view) {
+        findViewById<TextView>(R.id.textTipoCliente).text = "Socio"
+        findViewById<TextView>(R.id.LabelProxVenc).visibility = View.VISIBLE
+        findViewById<TextView>(R.id.textProxVenc).visibility = View.VISIBLE
+        findViewById<Button>(R.id.btnDarDeBaja).visibility = View.VISIBLE
+        findViewById<Button>(R.id.btnQuieroSerSocio).visibility = View.GONE
+
+        val textProxVenc = findViewById<TextView>(R.id.textProxVenc)
+        val btnDarDeBaja = findViewById<Button>(R.id.btnDarDeBaja)
+        val btnVerCarnet = findViewById<Button>(R.id.btnVerCarnet)
+        val labelCodigo = findViewById<TextView>(R.id.labelCodigoUsuario)
+        val textCodigo = findViewById<TextView>(R.id.textCodigoUsuario)
+
+        if (fechaVenc.isNullOrBlank()) {
+            textProxVenc.text = "ADEUDA CUOTA"
+            labelCodigo.visibility = View.GONE
+            textCodigo.visibility = View.GONE
+            btnVerCarnet.visibility = View.GONE
+        } else {
+            labelCodigo.visibility = View.VISIBLE
+            textCodigo.visibility = View.VISIBLE
+            btnVerCarnet.visibility = View.VISIBLE
+
+            val formato = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            try {
+                val fecha = formato.parse(fechaVenc)
+                val hoy = Date()
+                val vencida = fecha != null && fecha.before(hoy)
+
+                textProxVenc.text = if (vencida) "$fechaVenc (vencida)" else fechaVenc
+                btnDarDeBaja.visibility = if (vencida) View.VISIBLE else View.GONE
+            } catch (e: Exception) {
+                textProxVenc.text = "Fecha inválida"
+                btnDarDeBaja.visibility = View.VISIBLE
+            }
+        }
+    }
+
+
+    private fun mostrarNoSocioUI(view: View) = with(view) {
+        findViewById<TextView>(R.id.textTipoCliente).text = "No Socio"
+        findViewById<TextView>(R.id.LabelProxVenc).visibility = View.GONE
+        findViewById<TextView>(R.id.textProxVenc).visibility = View.GONE
+        findViewById<TextView>(R.id.labelCodigoUsuario).visibility = View.GONE
+        findViewById<TextView>(R.id.textCodigoUsuario).visibility = View.GONE
+        findViewById<Button>(R.id.btnQuieroSerSocio).visibility = View.VISIBLE
+        findViewById<Button>(R.id.btnDarDeBaja).visibility = View.GONE
+        findViewById<Button>(R.id.btnVerCarnet).visibility = View.GONE
     }
 }

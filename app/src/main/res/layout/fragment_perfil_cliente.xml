@@ -56,9 +56,17 @@
                     <TextView android:text="Nro Doc." style="@style/LabelStyle"/>
                     <TextView android:text="Tipo Cliente" style="@style/LabelStyle"/>
                     <TextView android:text="Fecha Inicio" style="@style/LabelStyle"/>
-                    <TextView android:text="Próx. Venc." style="@style/LabelStyle"/>
-
-                </LinearLayout>
+                    <TextView android:id="@+id/LabelProxVenc" android:text="Próx. Venc." style="@style/LabelStyle"/>
+                    <!-- Apto físico -->
+                    <CheckBox
+                        android:id="@+id/checkAptoFisicoEntregado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="Apto físico"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"/>
+                    </LinearLayout>
 
                 <!-- Columna Derecha: Datos del Cliente -->
                 <LinearLayout
@@ -83,16 +91,28 @@
                 </LinearLayout>
 
             </LinearLayout>
-
-            <!-- Apto físico -->
-            <CheckBox
-                android:id="@+id/checkAptoFisicoEntregado"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Apto físico"
-                android:textColor="@color/white"
-                android:textSize="18sp"/>
+                android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/labelCodigoUsuario"
+                    android:text="Código Usuario"
+                    style="@style/LabelStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"/>
+                <TextView
+                    android:id="@+id/textCodigoUsuario"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textColor="@color/gray"
+                    android:textStyle="bold"
+                    android:text="0000"
+                    android:layout_weight="3"/>
+
+            </LinearLayout>
         </LinearLayout>
 
 
@@ -146,10 +166,18 @@
                     android:layout_height="64dp"
                     android:text="Quiero Ser Socio"
                     android:textSize="18sp"
-                    android:backgroundTint="@color/sky_blue" />
+                    android:backgroundTint="@color/green" />
 
                 <Button
-                    android:id="@+id/btnSalir"
+                    android:id="@+id/btnDarDeBaja"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="Dar de Baja"
+                    android:textSize="18sp"
+                    android:backgroundTint="@color/red" />
+
+                <Button
+                    android:id="@+id/btnVerCarnet"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:backgroundTint="@color/sky_blue"

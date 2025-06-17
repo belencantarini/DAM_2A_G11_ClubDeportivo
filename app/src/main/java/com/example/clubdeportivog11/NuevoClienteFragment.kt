@@ -121,13 +121,7 @@ class NuevoClienteFragment : Fragment() {
             } else {
 
                 Toast.makeText(requireContext(), "Nuevo cliente registrado correctamente.", Toast.LENGTH_SHORT).show()
-                // Limpiar campos
-                etNombre.text?.clear()
-                etApellido.text?.clear()
-                spinnerTipoDoc.setSelection(0)
-                etNumeroDoc.text?.clear()
-                checkAptoFisico.isChecked = false
-                radioGroupTipo.clearCheck()
+
 
                 // Guardo el argumento del cliente Id en el Fragmento PerfilClienteFragment
                 val verClientePerfil = PerfilClienteFragment().apply {
@@ -154,5 +148,16 @@ class NuevoClienteFragment : Fragment() {
             parentFragmentManager.popBackStack("fragmentoInicio", 0)
             (activity as? MainActivity)?.cambiarFondo(R.drawable.bg_bolsas)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Limpiar campos
+        etNombre.text?.clear()
+        etApellido.text?.clear()
+        spinnerTipoDoc.setSelection(0)
+        etNumeroDoc.text?.clear()
+        checkAptoFisico.isChecked = false
+        radioGroupTipo.clearCheck()
     }
 }
