@@ -187,17 +187,11 @@ class PerfilClienteFragment : Fragment() {
         val textProxVenc = findViewById<TextView>(R.id.textProxVenc)
         val btnDarDeBaja = findViewById<Button>(R.id.btnDarDeBaja)
         val btnVerCarnet = findViewById<Button>(R.id.btnVerCarnet)
-        val labelCodigo = findViewById<TextView>(R.id.labelCodigoUsuario)
-        val textCodigo = findViewById<TextView>(R.id.textCodigoUsuario)
 
         if (fechaVenc.isNullOrBlank()) {
             textProxVenc.text = "ADEUDA CUOTA"
-            labelCodigo.visibility = View.GONE
-            textCodigo.visibility = View.GONE
             btnVerCarnet.visibility = View.GONE
         } else {
-            labelCodigo.visibility = View.VISIBLE
-            textCodigo.visibility = View.VISIBLE
             btnVerCarnet.visibility = View.VISIBLE
 
             val formato = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -220,8 +214,6 @@ class PerfilClienteFragment : Fragment() {
         findViewById<TextView>(R.id.textTipoCliente).text = "No Socio"
         findViewById<TextView>(R.id.LabelProxVenc).visibility = View.GONE
         findViewById<TextView>(R.id.textProxVenc).visibility = View.GONE
-        findViewById<TextView>(R.id.labelCodigoUsuario).visibility = View.GONE
-        findViewById<TextView>(R.id.textCodigoUsuario).visibility = View.GONE
         findViewById<Button>(R.id.btnQuieroSerSocio).visibility = View.VISIBLE
         findViewById<Button>(R.id.btnIrAPagarNoSocios).visibility = View.VISIBLE
         findViewById<Button>(R.id.btnIrAPagarSocios).visibility = View.GONE

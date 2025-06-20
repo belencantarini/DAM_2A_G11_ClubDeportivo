@@ -62,16 +62,28 @@ class CarnetActivity : AppCompatActivity() {
             val estadoTextView = findViewById<TextView>(R.id.textEstadoCarnet)
 
             // Validar vencimiento
-            val formato = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             try {
-                val fechaVencDate = formato.parse(fechaVenc)
-                val hoy = Date()
-
-                if (fechaVencDate != null && fechaVencDate.before(hoy)) {
+                if (fechaVenc == null || fechaVenc.isEmpty()) {
                     estadoTextView.visibility = View.VISIBLE
-                    Toast.makeText(this, "⚠️ Carnet VENCIDO", Toast.LENGTH_LONG).show()
+                    estadoTextView.text = "❌ Carnet no válido: pendiente de pago"
+                    Toast.makeText(this, "❌ Carnet no válido: aún no ha efectuado un pago", Toast.LENGTH_LONG).show()
+                    findViewById<TextView>(R.id.textFechaVencCarnet).text = "Fecha de Vencimiento: -"
                 } else {
-                    estadoTextView.visibility = View.GONE
+                    val formato = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    try {
+                        val fechaVencDate = formato.parse(fechaVenc)
+                        val hoy = Date()
+
+                        if (fechaVencDate != null && fechaVencDate.before(hoy)) {
+                            estadoTextView.visibility = View.VISIBLE
+                            estadoTextView.text = "⚠️ Carnet VENCIDO"
+                            Toast.makeText(this, "⚠️ Carnet VENCIDO", Toast.LENGTH_LONG).show()
+                        } else {
+                            estadoTextView.visibility = View.GONE
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(this, "Error al validar fecha", Toast.LENGTH_SHORT).show()
+                    }
                 }
             } catch (e: Exception) {
                 Toast.makeText(this, "Error al validar fecha", Toast.LENGTH_SHORT).show()

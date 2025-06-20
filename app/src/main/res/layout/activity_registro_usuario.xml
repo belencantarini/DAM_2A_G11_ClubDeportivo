@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".RegistroUsuarioActivity">
+
     <!-- Fondo -->
     <ImageView
         android:id="@+id/bgImage"
@@ -44,50 +45,64 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Imagen y título -->
+        <!-- Encabezado -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_gravity="center"
-                android:src="@drawable/img_login" />
+            android:padding="8dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name"
+                android:text="Registro de Socio"
                 android:textSize="24sp"
-                android:textColor="@color/gray"
+                android:textColor="@color/white"
                 android:gravity="center"
-                android:padding="18dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:padding="12dp" />
         </LinearLayout>
-
 
         <!-- Inputs -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:padding="8dp">
 
-            <EditText
-                android:id="@+id/lgnUser"
+            <Spinner
+                android:id="@+id/spinnerTipoDoc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Usuario"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shape_white_round_corners"
+                android:padding="12dp" />
+
+            <EditText
+                android:id="@+id/editNumeroDoc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Número de documento"
+                android:inputType="number"
                 android:textColor="@color/black"
                 android:padding="12dp"
                 android:textSize="18sp"
-                android:background="@drawable/shape_white_round_corners"/>
+                android:layout_marginTop="12dp"
+                android:background="@drawable/shape_white_round_corners" />
 
             <EditText
-                android:id="@+id/lgnPassword"
+                android:id="@+id/editNombreUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre de usuario deseado"
+                android:textColor="@color/black"
+                android:padding="12dp"
+                android:textSize="18sp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/shape_white_round_corners" />
+
+            <EditText
+                android:id="@+id/editPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Contraseña"
@@ -95,17 +110,29 @@
                 android:textColor="@color/black"
                 android:padding="12dp"
                 android:textSize="18sp"
-                android:textStyle="normal"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/shape_white_round_corners"/>
+                android:layout_marginTop="12dp"
+                android:background="@drawable/shape_white_round_corners" />
 
-            <CheckBox
-                android:id="@+id/chbPassword"
+            <EditText
+                android:id="@+id/editRepetirPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ver Contraseña"
+                android:hint="Repetir contraseña"
+                android:inputType="textPassword"
+                android:textColor="@color/black"
+                android:padding="12dp"
                 android:textSize="18sp"
-                android:textColor="@color/white"/>
+                android:layout_marginTop="12dp"
+                android:background="@drawable/shape_white_round_corners" />
+
+            <CheckBox
+                android:id="@+id/chbMostrarPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ver contraseña"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:layout_marginTop="8dp"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -119,20 +146,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="50dp">
+
         <Button
-            android:id="@+id/btnRegistrarse"
+            android:id="@+id/btnVolverCrearUsuario"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nuevo Usuario"
-            android:textSize="18sp"
-            android:backgroundTint="@color/orange"
-            android:layout_marginEnd="25dp"/>
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_InicioSesion"
+            android:text="Volver"
             android:textSize="18sp"
             android:backgroundTint="@color/orange" />
+
+        <Button
+            android:id="@+id/btnCrearUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Crear Usuario"
+            android:textSize="18sp"
+            android:layout_marginStart="25dp"
+            android:backgroundTint="@color/orange" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

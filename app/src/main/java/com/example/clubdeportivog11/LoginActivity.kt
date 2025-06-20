@@ -20,6 +20,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var txtUser: EditText
     private lateinit var txtPass: EditText
     private lateinit var btnLogin: Button
+    private lateinit var btnRegistrar: Button
     private lateinit var chbPass: CheckBox
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,20 +33,46 @@ class LoginActivity : AppCompatActivity() {
         txtUser = findViewById<EditText>(R.id.lgnUser)
         txtPass = findViewById<EditText>(R.id.lgnPassword)
         btnLogin = findViewById<Button>(R.id.btnLogin)
+        btnRegistrar = findViewById<Button>(R.id.btnRegistrarse)
 
-        btnLogin.setOnClickListener() {
+        btnLogin.setOnClickListener {
             val u = txtUser.text.toString().trim()
             val p = txtPass.text.toString().trim()
-            val intent = Intent(this, MainActivity::class.java);
 
-            if (dbHelper.login(u, p)) {
+            val datosUsuario = dbHelper.obtenerDatosUsuario(u, p)
+
+            if (datosUsuario != null) {
+                val rol = datosUsuario.first
+                val clienteId = datosUsuario.second
+
                 Toast.makeText(this, "Bienvenido $u", Toast.LENGTH_SHORT).show()
+
+                when (rol) {
+                    1 -> { // Administrador
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                    }
+                    2 -> { // Cliente
+                        if (clienteId != null) {
+                            val intent = Intent(this, CarnetActivity::class.java)
+                            intent.putExtra("clienteId", clienteId)
+                            startActivity(intent)
+                        } else {
+                            Toast.makeText(this, "Error: Cliente no válido", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    else -> {
+                        Toast.makeText(this, "Rol desconocido", Toast.LENGTH_SHORT).show()
+                    }
+                }
             } else {
                 Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
             }
+        }
 
-            //Pongo el pase al main directo para ahorrarme pasos pero deberia ir dentro del if
-            startActivity(intent);
+        btnRegistrar.setOnClickListener(){
+            val intent = Intent(this, RegistroUsuarioActivity::class.java)
+            startActivity(intent)
         }
 
         chbPass = findViewById<CheckBox>(R.id.chbPassword)

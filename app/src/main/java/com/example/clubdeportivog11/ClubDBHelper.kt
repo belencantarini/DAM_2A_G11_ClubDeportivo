@@ -9,7 +9,7 @@ import com.example.clubdeportivog11.models.ClientesDataClass
 import com.example.clubdeportivog11.models.HistorialPagosDataClass
 import com.example.clubdeportivog11.models.PlanesDataClass
 
-class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null, 1){
+class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null, 2){
 
 
     // OnCreate - Crea mi base de datos
@@ -151,7 +151,7 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
         db.execSQL("""
             INSERT INTO Socio (ClienteID, FechaVencimientoCuota)
             VALUES
-            (1, '2025-07-01'),
+            (1, '2025-06-01'),
             (2, '2025-09-02'),
             (3, NULL);
         """.trimIndent())
@@ -163,13 +163,7 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
             (2, 2, NULL, 80000.00, 'Tarjeta de Crédito', 3, '2025-06-02');
         """.trimIndent())
 
-        db.execSQL("""
-            INSERT INTO Usuario (Nombre, Pass, RolUsuario)
-            VALUES 
-            ('facundo', 'facundo123', 2),
-            ('camila', 'camila123', 2),
-            ('lucas', 'lucas123', 2);
-        """.trimIndent())
+
 
         // Clientes no socios
         db.execSQL("""
@@ -236,13 +230,33 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
             return existe
         }
 
+    //OBTENER DATOS DE USUARIO
+    fun obtenerDatosUsuario(nombre: String, pass: String): Pair<Int, Long?>? {
+        val db = readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT RolUsuario, ClienteID FROM Usuario WHERE Nombre = ? AND Pass = ?",
+            arrayOf(nombre, pass)
+        )
+
+        return if (cursor.moveToFirst()) {
+            val rol = cursor.getInt(0)
+            val clienteId = if (!cursor.isNull(1)) cursor.getLong(1) else null
+            cursor.close()
+            Pair(rol, clienteId)
+        } else {
+            cursor.close()
+            null
+        }
+    }
+
     // CREACION DE NUEVO USUARIO CON ROL DE CLIENTE
-    fun crearUsuarioCliente(nombre: String, pass: String): Boolean {
+    fun crearUsuarioCliente(nombre: String, pass: String, clienteID: Long): Boolean {
         val db = writableDatabase
         return try {
-            val stmt = db.compileStatement("INSERT INTO Usuario (Nombre, Pass, RolUsuario) VALUES (?, ?, 2)")
+            val stmt = db.compileStatement("INSERT INTO Usuario (Nombre, Pass, ClienteID, RolUsuario) VALUES (?, ?, ?, 2)")
             stmt.bindString(1, nombre)
             stmt.bindString(2, pass)
+            stmt.bindLong(3, clienteID)
             stmt.executeInsert()
             true
         } catch (e: Exception) {
@@ -524,6 +538,7 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
         db.beginTransaction()
         return try {
             db.execSQL("DELETE FROM Socio WHERE ClienteID = ?", arrayOf(clienteID))
+            db.execSQL("DELETE FROM Usuario WHERE ClienteID = ?", arrayOf(clienteID))
             db.execSQL("INSERT INTO NoSocio (ClienteID) VALUES (?)", arrayOf(clienteID))
             db.setTransactionSuccessful()
             true
@@ -533,6 +548,7 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
             db.endTransaction()
         }
     }
+
 
 
     // BUSCAR CLIENTES SEGUN LO QUE INGRESO A UN CAMPO
