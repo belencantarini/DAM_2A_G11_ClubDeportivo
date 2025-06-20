@@ -499,15 +499,15 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
     }
 
     // PASAR UN NO SOCIO QUE SE HACE SOCIO
-    fun convertirNoSocioEnSocio(clienteID: Int, fechaVencimientoCuota: String): Boolean {
+    fun convertirNoSocioEnSocio(clienteID: Long): Boolean {
         val db = writableDatabase
         db.beginTransaction()
         return try {
             db.execSQL("DELETE FROM NoSocio WHERE ClienteID = ?", arrayOf(clienteID))
             db.execSQL("""
             INSERT INTO Socio (ClienteID, FechaVencimientoCuota)
-            VALUES (?, ?)
-        """, arrayOf(clienteID, fechaVencimientoCuota))
+            VALUES (?, NULL)
+        """.trimIndent(), arrayOf(clienteID))
             db.setTransactionSuccessful()
             true
         } catch (e: Exception) {
@@ -519,29 +519,14 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
 
 
     // DAR DE BAJA UN SOCIO QUE PASA A SER UN NO SOCIO (SOLO CON CUOTA VENCIDA)
-    fun darDeBajaSocio(clienteID: Int, fechaHoy: String): Boolean {
+    fun darDeBajaSocio(clienteID: Long): Boolean {
         val db = writableDatabase
         db.beginTransaction()
         return try {
-            val cursor = db.rawQuery("""
-            SELECT FechaVencimientoCuota FROM Socio WHERE ClienteID = ?
-        """, arrayOf(clienteID.toString()))
-
-            var vencida = false
-            if (cursor.moveToFirst()) {
-                val fechaVencimiento = cursor.getString(0)
-                vencida = fechaVencimiento < fechaHoy
-            }
-            cursor.close()
-
-            if (vencida) {
-                db.execSQL("DELETE FROM Socio WHERE ClienteID = ?", arrayOf(clienteID))
-                db.execSQL("INSERT INTO NoSocio (ClienteID) VALUES (?)", arrayOf(clienteID))
-                db.setTransactionSuccessful()
-                true
-            } else {
-                false
-            }
+            db.execSQL("DELETE FROM Socio WHERE ClienteID = ?", arrayOf(clienteID))
+            db.execSQL("INSERT INTO NoSocio (ClienteID) VALUES (?)", arrayOf(clienteID))
+            db.setTransactionSuccessful()
+            true
         } catch (e: Exception) {
             false
         } finally {

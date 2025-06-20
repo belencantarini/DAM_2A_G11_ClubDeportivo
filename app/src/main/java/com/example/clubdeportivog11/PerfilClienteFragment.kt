@@ -1,5 +1,6 @@
 package com.example.clubdeportivog11
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -70,9 +71,7 @@ class PerfilClienteFragment : Fragment() {
             Toast.makeText(requireContext(), "Cliente no encontrado", Toast.LENGTH_SHORT).show()
         }
         cursor.close()
-
         cargarTipoSocio(view)
-
         db.close()
 
         // Botón Volver
@@ -114,7 +113,48 @@ class PerfilClienteFragment : Fragment() {
             }
             (activity as? MainActivity)?.irASeccion(historialFragment)
         }
+
+
+        // Boton Quiero ser Socio
+        val btnQuieroSerSocio = view.findViewById<Button>(R.id.btnQuieroSerSocio)
+        btnQuieroSerSocio.setOnClickListener {
+            val fueExitoso = dbHelper.convertirNoSocioEnSocio(clienteId)
+            if (fueExitoso) {
+                Toast.makeText(requireContext(), "Ahora sos socio 🎉", Toast.LENGTH_SHORT).show()
+                // Podés recargar datos o volver atrás
+                cargarDatosCliente(view)
+            } else {
+                Toast.makeText(requireContext(), "Error al convertir en socio", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+        // Boton de Dar de Baja como Socio
+        val btnDarDeBaja = view.findViewById<Button>(R.id.btnDarDeBaja)
+        btnDarDeBaja.setOnClickListener {
+            val fueExitoso = dbHelper.darDeBajaSocio(clienteId)
+            if (fueExitoso) {
+                Toast.makeText(requireContext(), "Sos No Socio ahora", Toast.LENGTH_SHORT).show()
+                // Podés recargar datos o volver atrás
+                cargarDatosCliente(view)
+            } else {
+                Toast.makeText(requireContext(), "Error al dar de baja", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+        // Boton Ver Carnet de Socio
+        val btnVerCarnet = view.findViewById<Button>(R.id.btnVerCarnet)
+
+        btnVerCarnet.setOnClickListener {
+            val intent = Intent(requireContext(), CarnetActivity::class.java)
+            intent.putExtra("clienteId", clienteId) // pasás el ID del socio
+            startActivity(intent)
+        }
+
     }
+
+
 
     private fun cargarTipoSocio(view: View) {
         val dbHelper = ClubDBHelper(requireContext())

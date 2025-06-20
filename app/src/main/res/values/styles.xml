@@ -30,4 +30,12 @@
         <item name="android:layout_marginBottom">2dp</item>
     </style>
 
+    <style name="CarnetItem">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
 </resources>
