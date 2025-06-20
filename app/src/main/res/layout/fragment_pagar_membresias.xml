@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+tools:context=".PagarMembresiasFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:id="@+id/recyclerContainerMembresias"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/totalMembresiaContainer">
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/textTituloPagarMembresia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pagar Membresías"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Cliente -->
+        <LinearLayout
+            android:id="@+id/layoutDatosCliente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:background="@drawable/shape_transp_navy_blue_round_corners">
+            <TextView
+                android:id="@+id/textApellidoNombre"  style="@style/LabelStylePago" />
+            <TextView
+                android:id="@+id/textDOCyNro" style="@style/LabelStylePago" />
+            <TextView
+                android:id="@+id/textTipoClienteFechaVenc" style="@style/LabelStylePago" />
+        </LinearLayout>
+
+        <!-- Recycler View para mis clientes -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMembresiasPago"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingVertical="20dp"/>
+
+    </LinearLayout>
+
+    <!-- Suma total de la compra -->
+    <LinearLayout
+        android:id="@+id/totalMembresiaContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerContainerMembresias"
+        app:layout_constraintBottom_toTopOf="@+id/volverPagoMembresia"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="40dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Monto Total"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:background="@color/white"
+            android:layout_marginEnd="20dp"/>
+        <TextView
+            android:id="@+id/TotalMonto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$120.000"
+            android:textAlignment="center"
+            android:width="150dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:background="@drawable/shape_white_round_corners"
+            android:textColor="@color/black"
+            android:padding="8dp"/>
+    </LinearLayout>
+
+    <!-- Botón abajo del todo -->
+    <LinearLayout
+        android:id="@+id/volverPagoMembresia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="60dp">
+        <Button
+            android:id="@+id/btnVolverPagoMembresia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Volver"
+            android:textSize="18sp"
+            android:backgroundTint="@color/orange" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

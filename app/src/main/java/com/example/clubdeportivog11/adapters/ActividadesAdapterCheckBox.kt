@@ -11,36 +11,39 @@ import com.example.clubdeportivog11.R
 import com.example.clubdeportivog11.models.PlanesDataClass
 
 
-class ActividadesAdapter(private val actividades: List<ActividadesDataClass>) :
-    RecyclerView.Adapter<ActividadesAdapter.ActividadViewHolder>() {
-
-
-
+class ActividadesAdapterCheckBox(
+    private val actividades: List<ActividadesDataClass>,
+    private val onSeleccionado: (List<ActividadesDataClass>) -> Unit,
+    private val mostrarCheck: Boolean
+) : RecyclerView.Adapter<ActividadesAdapterCheckBox.ActividadViewHolder>() {
 
     inner class ActividadViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val checkBox: CheckBox = itemView.findViewById(R.id.checkbox)
         val tvNombre: TextView = view.findViewById(R.id.tvNombre)
         val tvPrecio: TextView = view.findViewById(R.id.tvPrecio)
-
     }
 
-    // El onCreateViewHolder es el que se encarga de inflar los items necesarios que entran
-    // en mi vista, si me entran 8 items se llama a esta funcion 8 veces
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActividadViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_plan_actividad, parent, false)
+            .inflate(R.layout.item_actividad_checkbox, parent, false)
         return ActividadViewHolder(view)
     }
-
-
-    // Luego con el onBind relleno los text view de mi item que identifique previamente en el
-    // View Holder y le pongo el texto que yo misma estoy asignando (desde la base de datos)
-    // en base a la posicion en la que estamos (por ejemplo si los datos terminan siendo
-    // scrolleables, me va a asignar los items segun la posicion en la que estoy
 
     override fun onBindViewHolder(holder: ActividadViewHolder, position: Int) {
         val actividad = actividades[position]
         holder.tvNombre.text = actividad.nombre
         holder.tvPrecio.text = String.format("$%.2f", actividad.precio)
+
+        holder.checkBox.visibility = if (mostrarCheck) View.VISIBLE else View.GONE
+
+        holder.checkBox.setOnCheckedChangeListener(null)
+        holder.checkBox.isChecked = actividad.seleccionado
+
+        holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
+            actividad.seleccionado = isChecked
+            val seleccionadas = actividades.filter { it.seleccionado }
+            onSeleccionado(seleccionadas)
+        }
     }
 
     override fun getItemCount() = actividades.size

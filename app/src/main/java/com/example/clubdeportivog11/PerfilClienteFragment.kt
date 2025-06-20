@@ -80,6 +80,18 @@ class PerfilClienteFragment : Fragment() {
         btnVolver.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
+
+        // Boton ir a pagar membresias
+
+        val btnIrAPagar = view.findViewById<Button>(R.id.btnIrAPagarSocios)
+        btnIrAPagar.setOnClickListener {
+            val pagarFragment = PagarMembresiasFragment().apply {
+                arguments = Bundle().apply {
+                    putLong("clienteId", clienteId)
+                }
+            }
+            (activity as? MainActivity)?.irASeccion(pagarFragment)
+        }
     }
 
     private fun cargarTipoSocio(view: View) {
@@ -107,6 +119,8 @@ class PerfilClienteFragment : Fragment() {
         findViewById<TextView>(R.id.textProxVenc).visibility = View.VISIBLE
         findViewById<Button>(R.id.btnDarDeBaja).visibility = View.VISIBLE
         findViewById<Button>(R.id.btnQuieroSerSocio).visibility = View.GONE
+        findViewById<Button>(R.id.btnIrAPagarNoSocios).visibility = View.GONE
+        findViewById<Button>(R.id.btnIrAPagarSocios).visibility = View.VISIBLE
 
         val textProxVenc = findViewById<TextView>(R.id.textProxVenc)
         val btnDarDeBaja = findViewById<Button>(R.id.btnDarDeBaja)
@@ -147,6 +161,8 @@ class PerfilClienteFragment : Fragment() {
         findViewById<TextView>(R.id.labelCodigoUsuario).visibility = View.GONE
         findViewById<TextView>(R.id.textCodigoUsuario).visibility = View.GONE
         findViewById<Button>(R.id.btnQuieroSerSocio).visibility = View.VISIBLE
+        findViewById<Button>(R.id.btnIrAPagarNoSocios).visibility = View.VISIBLE
+        findViewById<Button>(R.id.btnIrAPagarSocios).visibility = View.GONE
         findViewById<Button>(R.id.btnDarDeBaja).visibility = View.GONE
         findViewById<Button>(R.id.btnVerCarnet).visibility = View.GONE
     }

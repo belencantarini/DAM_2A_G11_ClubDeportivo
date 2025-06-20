@@ -85,9 +85,7 @@ class PlanesFragment : Fragment() {
         }
 
 
-
     }
-
 
 }
 

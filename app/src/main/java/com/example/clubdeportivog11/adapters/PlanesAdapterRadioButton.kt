@@ -10,9 +10,14 @@ import com.example.clubdeportivog11.R
 import com.example.clubdeportivog11.models.PlanesDataClass
 
 
-class PlanesAdapter(private val planes: List<PlanesDataClass>) :
-    RecyclerView.Adapter<PlanesAdapter.PlanViewHolder>() {
+class PlanesAdapterRadioButton(
+    private val planes: List<PlanesDataClass>,
+    private val onSeleccionado: (PlanesDataClass) -> Unit,
+    private val mostrarRadio: Boolean
+) : RecyclerView.Adapter<PlanesAdapterRadioButton.PlanViewHolder>() {
 
+
+    private var selectedPosition = -1
 
     // En mi clase interna de Plan View Holder lo que hago es tomar id de los text view
     // de mis items creados para mostrar datos (item_plan_actividad).
@@ -20,6 +25,7 @@ class PlanesAdapter(private val planes: List<PlanesDataClass>) :
     // recien dentro de la clase adapter: PlanesAdapter.PlanViewHolder
 
     inner class PlanViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val radioButton: RadioButton = itemView.findViewById(R.id.radioButton)
         val tvNombre: TextView = view.findViewById(R.id.tvNombre)
         val tvPrecio: TextView = view.findViewById(R.id.tvPrecio)
 
@@ -29,7 +35,7 @@ class PlanesAdapter(private val planes: List<PlanesDataClass>) :
     // en mi vista, si me entran 8 items se llama a esta funcion 8 veces
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlanViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_plan_actividad, parent, false)
+            .inflate(R.layout.item_plan_radiobutton, parent, false)
         return PlanViewHolder(view)
     }
 
@@ -41,8 +47,25 @@ class PlanesAdapter(private val planes: List<PlanesDataClass>) :
 
     override fun onBindViewHolder(holder: PlanViewHolder, position: Int) {
         val plan = planes[position]
+
         holder.tvNombre.text = plan.nombre
         holder.tvPrecio.text = String.format("$%.2f", plan.precio)
+
+        holder.radioButton.visibility = if (mostrarRadio) View.VISIBLE else View.GONE
+        holder.radioButton.isChecked = position == selectedPosition
+
+        holder.radioButton.setOnClickListener {
+            val adapterPosition = holder.adapterPosition
+            if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
+            val previousPosition = selectedPosition
+            selectedPosition = adapterPosition
+
+            if (previousPosition != -1) notifyItemChanged(previousPosition)
+            notifyItemChanged(selectedPosition)
+
+            onSeleccionado(planes[adapterPosition])
+        }
     }
 
     override fun getItemCount() = planes.size

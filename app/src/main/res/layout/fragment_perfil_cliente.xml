@@ -135,10 +135,18 @@
                 android:layout_marginEnd="8dp">
 
                 <Button
-                    android:id="@+id/btnIrAPagar"
+                    android:id="@+id/btnIrAPagarNoSocios"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
-                    android:text="Ir a Pagar"
+                    android:text="Ir a Pagar Actividades"
+                    android:textSize="18sp"
+                    android:backgroundTint="@color/sky_blue"/>
+
+                <Button
+                    android:id="@+id/btnIrAPagarSocios"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="Ir a Pagar Membresías"
                     android:textSize="18sp"
                     android:backgroundTint="@color/sky_blue"/>
 
@@ -172,7 +180,7 @@
                     android:id="@+id/btnDarDeBaja"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
-                    android:text="Dar de Baja"
+                    android:text="Dar baja y ser No Socio"
                     android:textSize="18sp"
                     android:backgroundTint="@color/red" />
 
