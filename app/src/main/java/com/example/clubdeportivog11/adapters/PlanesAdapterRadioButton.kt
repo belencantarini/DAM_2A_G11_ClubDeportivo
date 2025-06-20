@@ -12,8 +12,7 @@ import com.example.clubdeportivog11.models.PlanesDataClass
 
 class PlanesAdapterRadioButton(
     private val planes: List<PlanesDataClass>,
-    private val onSeleccionado: (PlanesDataClass) -> Unit,
-    private val mostrarRadio: Boolean
+    private val onSeleccionado: (PlanesDataClass) -> Unit
 ) : RecyclerView.Adapter<PlanesAdapterRadioButton.PlanViewHolder>() {
 
 
@@ -50,8 +49,6 @@ class PlanesAdapterRadioButton(
 
         holder.tvNombre.text = plan.nombre
         holder.tvPrecio.text = String.format("$%.2f", plan.precio)
-
-        holder.radioButton.visibility = if (mostrarRadio) View.VISIBLE else View.GONE
         holder.radioButton.isChecked = position == selectedPosition
 
         holder.radioButton.setOnClickListener {

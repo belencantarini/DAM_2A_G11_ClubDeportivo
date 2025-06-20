@@ -13,8 +13,7 @@ import com.example.clubdeportivog11.models.PlanesDataClass
 
 class ActividadesAdapterCheckBox(
     private val actividades: List<ActividadesDataClass>,
-    private val onSeleccionado: (List<ActividadesDataClass>) -> Unit,
-    private val mostrarCheck: Boolean
+    private val onSeleccionado: (List<ActividadesDataClass>) -> Unit
 ) : RecyclerView.Adapter<ActividadesAdapterCheckBox.ActividadViewHolder>() {
 
     inner class ActividadViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -33,8 +32,6 @@ class ActividadesAdapterCheckBox(
         val actividad = actividades[position]
         holder.tvNombre.text = actividad.nombre
         holder.tvPrecio.text = String.format("$%.2f", actividad.precio)
-
-        holder.checkBox.visibility = if (mostrarCheck) View.VISIBLE else View.GONE
 
         holder.checkBox.setOnCheckedChangeListener(null)
         holder.checkBox.isChecked = actividad.seleccionado

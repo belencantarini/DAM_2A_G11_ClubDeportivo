@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-tools:context=".PagarMembresiasFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".PagarActividadesFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:id="@+id/recyclerContainerMembresias"
+        android:id="@+id/recyclerContainerActividades"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/totalMembresiaContainer">
+        app:layout_constraintBottom_toTopOf="@+id/totalActividadesContainer">
 
         <!-- Título -->
         <TextView
-            android:id="@+id/textTituloPagarMembresia"
+            android:id="@+id/textTituloPagarActividad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pagar Membresías"
+            android:text="Pagar Actividades"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@color/white"
@@ -28,7 +28,7 @@ tools:context=".PagarMembresiasFragment">
 
         <!-- Cliente -->
         <LinearLayout
-            android:id="@+id/layoutDatosCliente"
+            android:id="@+id/layoutDatosClienteActividades"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -44,7 +44,7 @@ tools:context=".PagarMembresiasFragment">
 
         <!-- Recycler View para mis membresias -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewMembresiasPago"
+            android:id="@+id/recyclerViewActividadesPago"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingVertical="20dp"
@@ -54,13 +54,13 @@ tools:context=".PagarMembresiasFragment">
 
     <!-- Suma total de la compra -->
     <LinearLayout
-        android:id="@+id/totalMembresiaContainer"
+        android:id="@+id/totalActividadesContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="end"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerContainerMembresias"
-        app:layout_constraintBottom_toTopOf="@+id/volverPagoMembresia"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerContainerActividades"
+        app:layout_constraintBottom_toTopOf="@+id/volverPagoActividad"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="40dp">
@@ -88,7 +88,7 @@ tools:context=".PagarMembresiasFragment">
 
     <!-- Botón abajo del todo -->
     <LinearLayout
-        android:id="@+id/volverPagoMembresia"
+        android:id="@+id/volverPagoActividad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -98,7 +98,7 @@ tools:context=".PagarMembresiasFragment">
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="60dp">
         <Button
-            android:id="@+id/btnConfirmarPagoMembresias"
+            android:id="@+id/btnConfirmarPagoActividades"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Confirmar Pago"
@@ -106,12 +106,13 @@ tools:context=".PagarMembresiasFragment">
             android:layout_marginEnd="20dp"
             android:backgroundTint="@color/sky_blue" />
         <Button
-            android:id="@+id/btnVolverPagoMembresia"
+            android:id="@+id/btnVolverPagoActividad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Volver"
             android:textSize="18sp"
             android:layout_marginStart="20dp"
-            android:backgroundTint="@color/orange" />
+            android:backgroundTint="@color/orange"
+            />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

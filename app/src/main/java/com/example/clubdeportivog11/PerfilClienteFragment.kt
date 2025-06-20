@@ -83,14 +83,36 @@ class PerfilClienteFragment : Fragment() {
 
         // Boton ir a pagar membresias
 
-        val btnIrAPagar = view.findViewById<Button>(R.id.btnIrAPagarSocios)
-        btnIrAPagar.setOnClickListener {
+        val btnIrAPagarSocios = view.findViewById<Button>(R.id.btnIrAPagarSocios)
+        btnIrAPagarSocios.setOnClickListener {
             val pagarFragment = PagarMembresiasFragment().apply {
                 arguments = Bundle().apply {
                     putLong("clienteId", clienteId)
                 }
             }
             (activity as? MainActivity)?.irASeccion(pagarFragment)
+        }
+
+        // Boton ir a pagar actividades
+        val btnIrAPagarNoSocios = view.findViewById<Button>(R.id.btnIrAPagarNoSocios)
+        btnIrAPagarNoSocios.setOnClickListener {
+            val pagarFragment = PagarActividadesFragment().apply {
+                arguments = Bundle().apply {
+                    putLong("clienteId", clienteId)
+                }
+            }
+            (activity as? MainActivity)?.irASeccion(pagarFragment)
+        }
+
+        // Boton ir ver Historial de Pagos
+        val btnVerHistorialPagos = view.findViewById<Button>(R.id.btnHistorialPagos)
+        btnVerHistorialPagos.setOnClickListener {
+            val historialFragment = HistorialPagosFragment().apply {
+                arguments = Bundle().apply {
+                    putLong("clienteId", clienteId)
+                }
+            }
+            (activity as? MainActivity)?.irASeccion(historialFragment)
         }
     }
 

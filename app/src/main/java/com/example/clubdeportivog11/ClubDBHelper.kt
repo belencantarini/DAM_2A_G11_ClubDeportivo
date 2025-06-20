@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.clubdeportivog11.models.ActividadesDataClass
 import com.example.clubdeportivog11.models.ClientesDataClass
+import com.example.clubdeportivog11.models.HistorialPagosDataClass
 import com.example.clubdeportivog11.models.PlanesDataClass
 
 class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null, 1){
@@ -303,6 +304,7 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
         }
 
 
+
         // Con lo armado genero el argumento de busqueda
         val query = """
             SELECT 
@@ -370,6 +372,48 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
     }
 
 
+
+    // OBTENER HISTORIAL DE PAGOS
+    fun obtenerHistorialPagos(clienteId: Long): List<HistorialPagosDataClass> {
+        val lista = mutableListOf<HistorialPagosDataClass>()
+        val db = readableDatabase
+
+        val cursor = db.rawQuery("""
+        SELECT 
+            p.FechaPago,
+            a.Nombre AS NombreActividad,
+            m.PlanMembresia AS NombreMembresia,
+            p.Monto,
+            p.MetodoPago
+
+        FROM Pago p
+        LEFT JOIN Actividad a ON p.ActividadID = a.ActividadID
+        LEFT JOIN PlanMembresia m ON p.MembresiaID = m.MembresiaID
+        WHERE p.ClienteID = ?
+        ORDER BY p.FechaPago DESC
+    """.trimIndent(), arrayOf(clienteId.toString()))
+
+        while (cursor.moveToNext()) {
+            val fecha = cursor.getString(0)
+            val nombreActividad = cursor.getString(1)
+            val nombreMembresia = cursor.getString(2)
+            val monto = cursor.getDouble(3)
+            val metodo = cursor.getString(4)
+
+
+            val descripcion = when {
+                !nombreActividad.isNullOrEmpty() -> nombreActividad
+                !nombreMembresia.isNullOrEmpty() -> "Plan: $nombreMembresia"
+                else -> "Otro pago"
+            }
+
+            lista.add(HistorialPagosDataClass(fecha, descripcion, monto, metodo ))
+        }
+
+        cursor.close()
+        db.close()
+        return lista
+    }
 
 
     // FUNCIONES PARA HACER REGISTROS EN MI BASE DE DATOS

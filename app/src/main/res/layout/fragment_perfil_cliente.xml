@@ -151,7 +151,7 @@
                     android:backgroundTint="@color/sky_blue"/>
 
                 <Button
-                    android:id="@+id/btnOtraAccion"
+                    android:id="@+id/btnHistorialPagos"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:backgroundTint="@color/sky_blue"

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:padding="8dp">
+
+
+    <TextView
+        android:id="@+id/textFecha"
+        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:text="2025-06-20"
+        android:textStyle="bold"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/textDescripcion"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:text="Yoga"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/textMonto"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:text="$1500"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/textMetodo"
+        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:text="Transferencia"
+        android:textSize="12sp"/>
+</LinearLayout>
