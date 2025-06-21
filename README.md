@@ -18,6 +18,31 @@ La aplicación del **Club Deportivo** permite la gestión de socios y no socios,
 
 ---
 
+## Ejemplos para usuarios
+
+- **Administrador:** 
+  - Usuario: `admin`
+  - Contraseña: `1234`
+
+- **Cliente Socio:** 
+  - Usuario: `ana`
+  - Contraseña: `ana123`
+
+- **Cliente Socio:** 
+  - Usuario: `bruno`
+  - Contraseña: `bruno123`
+
+- **Cliente Socio:** 
+  - Usuario: `clara`
+  - Contraseña: `clara123`
+
+- **Cliente Socio:** 
+  - Usuario: `diego`
+  - Contraseña: `diego123`
+
+---
+
+
 ## 🛠️ Tecnologías Utilizadas
 
 - **Lenguaje:** Kotlin
