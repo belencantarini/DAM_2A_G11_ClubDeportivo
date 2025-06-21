@@ -67,7 +67,6 @@
             android:layout_height="wrap_content"
             android:text="Volver"
             android:textSize="18sp"
-            android:layout_marginStart="20dp"
             android:backgroundTint="@color/orange" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -45,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
                 val rol = datosUsuario.first
                 val clienteId = datosUsuario.second
 
-                Toast.makeText(this, "Bienvenido $u", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "\uD83C\uDF89 Bienvenido $u ", Toast.LENGTH_SHORT).show()
 
                 when (rol) {
                     1 -> { // Administrador

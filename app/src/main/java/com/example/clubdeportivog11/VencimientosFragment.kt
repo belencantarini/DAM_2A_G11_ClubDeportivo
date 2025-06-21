@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.clubdeportivog11.adapters.ClientesAdapter
@@ -49,10 +50,28 @@ class VencimientosFragment : Fragment() {
             clientesVencimientosReciclerView.layoutManager = LinearLayoutManager(requireContext())
             clientesVencimientosReciclerView.adapter = ClientesAdapter(lista, configBotones,
                 onPagarClick = { cliente ->
-                    // Navegar a perfil del cliente
+                    val fragmentDestino = if (cliente.esSocio) {
+                        PagarMembresiasFragment()
+                    } else {
+                        PagarActividadesFragment()
+                    }
+
+                    fragmentDestino.arguments = Bundle().apply {
+                        putLong("clienteId", cliente.clienteID)
+                    }
+
+                    (activity as? MainActivity)?.irASeccion(fragmentDestino)
                 },
                 onDarDeBajaClick = { cliente ->
-                    // Dar de baja cliente
+                    val fueExitoso = dbHelper.darDeBajaSocio(cliente.clienteID)
+                    if (fueExitoso) {
+                        Toast.makeText(requireContext(), "Sos No Socio ahora", Toast.LENGTH_SHORT).show()
+                        // Recargamos la lista actualizada
+                        val listaActualizada = dbHelper.obtenerClientes(soloCuotaVencida = true)
+                        mostrarClientes(listaActualizada, configBotones, clientesVencimientosReciclerView)
+                    } else {
+                        Toast.makeText(requireContext(), "Error al dar de baja", Toast.LENGTH_SHORT).show()
+                    }
                 })
         }
 

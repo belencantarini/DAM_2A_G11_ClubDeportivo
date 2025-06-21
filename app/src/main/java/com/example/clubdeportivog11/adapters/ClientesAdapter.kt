@@ -8,6 +8,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.clubdeportivog11.R
 import com.example.clubdeportivog11.models.BotonesCardsDataClass
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
 
 class ClientesAdapter (
     private val clientes: List<ClientesDataClass>,
@@ -41,11 +46,31 @@ class ClientesAdapter (
         val cliente = clientes[position]
         holder.txNombre.text =  "${cliente.apellido} ${cliente.nombre}"
         holder.txDNI.text =  "${cliente.tipoDoc}: ${cliente.dni}"
-        holder.txSocio.text = if (cliente.esSocio) {
-            "Socio - " +
-                    (if(cliente.fechaVencimientoCuota.isNullOrEmpty()) "Adeuda pago"
-                    else "Venc.: " + cliente.fechaVencimientoCuota)} else {"No Socio"}
 
+
+        if (cliente.esSocio) {
+            val vencimiento = cliente.fechaVencimientoCuota
+            val estadoCuota = if (vencimiento.isNullOrEmpty()) {
+                "Adeuda pago"
+            } else {
+                try {
+                    val formato = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val fechaVenc = formato.parse(vencimiento)
+                    val hoy = Date()
+
+                    if (fechaVenc != null && fechaVenc.before(hoy)) {
+                        "Vencido: $vencimiento"
+                    } else {
+                        "Vence: $vencimiento"
+                    }
+                } catch (e: Exception) {
+                    "Fecha inválida"
+                }
+            }
+            holder.txSocio.text = "Socio - $estadoCuota"
+        } else {
+            holder.txSocio.text = "No Socio"
+        }
 
         // Mostrar - Ocultar botones (esto lo configuramos en el fragment correspondiente)
         holder.btnVer.visibility = if (configBotones.mostrarVer) View.VISIBLE else View.GONE

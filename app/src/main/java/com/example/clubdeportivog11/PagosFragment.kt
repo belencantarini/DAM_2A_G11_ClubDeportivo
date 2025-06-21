@@ -47,10 +47,25 @@ class PagosFragment : Fragment() {
             clientesPagosReciclerView.layoutManager = LinearLayoutManager(requireContext())
             clientesPagosReciclerView.adapter = ClientesAdapter(lista, configBotones,
                 onPagarClick = { cliente ->
-                    // Navegar a perfil del cliente
+                    val fragmentDestino = if (cliente.esSocio) {
+                        PagarMembresiasFragment()
+                    } else {
+                        PagarActividadesFragment()
+                    }
+
+                    fragmentDestino.arguments = Bundle().apply {
+                        putLong("clienteId", cliente.clienteID)
+                    }
+
+                    (activity as? MainActivity)?.irASeccion(fragmentDestino)
                 },
                 onHistorialClick = { cliente ->
-                    // Navegar a perfil del cliente
+                    val historialFragment = HistorialPagosFragment().apply {
+                        arguments = Bundle().apply {
+                            putLong("clienteId", cliente.clienteID)
+                        }
+                    }
+                    (activity as? MainActivity)?.irASeccion(historialFragment)
                 })
         }
 

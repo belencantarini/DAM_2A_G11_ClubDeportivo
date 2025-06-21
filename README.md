@@ -5,11 +5,10 @@ Trabajo Práctico - Desarrollo de Aplicaciones para Dispositivos
 🧑‍💻 Grupo 11
 
 ## 👥 Integrantes
-- Aiza Johanna  
 - Cantarini Echezarreta Maria Belén  
 - Gomez De Leo Damian Marcelo  
 - Nuñez Emiliano  
-- Pintos Guillermo  
+
 
 ---
 
