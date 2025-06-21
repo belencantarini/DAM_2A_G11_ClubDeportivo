@@ -9,7 +9,7 @@ import com.example.clubdeportivog11.models.ClientesDataClass
 import com.example.clubdeportivog11.models.HistorialPagosDataClass
 import com.example.clubdeportivog11.models.PlanesDataClass
 
-class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null, 2){
+class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null, 1){
 
 
     // OnCreate - Crea mi base de datos
@@ -140,27 +140,47 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
 
         // Cargo datos para mostrar de mis clientes socios y no socios
         // Clientes socios
+
+
+
         db.execSQL("""
             INSERT INTO Cliente (Nombre, Apellido, TipoDocumento, NumeroDocumento, FechaInscripcion, AptoFisico)
             VALUES 
-            ('Facundo', 'Pérez', 'DNI', 30123456, '2025-06-01', 1),
-            ('Camila', 'González', 'DNI', 29222333, '2025-06-02', 1),
-            ('Lucas', 'Ramírez', 'DNI', 30999888, '2025-06-03', 1);
+                ('Ana', 'Torres', 'DNI', 30111111, '2025-06-01', 1),
+                ('Bruno', 'Fernández', 'DNI', 30222222, '2025-06-02', 1),
+                ('Clara', 'López', 'DNI', 30333333, '2025-06-03', 1),
+                ('Diego', 'Martínez', 'DNI', 30444444, '2025-06-04', 1),
+                ('Elena', 'García', 'DNI', 30555555, '2025-06-05', 1)
         """.trimIndent())
 
         db.execSQL("""
             INSERT INTO Socio (ClienteID, FechaVencimientoCuota)
             VALUES
-            (1, '2025-06-01'),
-            (2, '2025-09-02'),
-            (3, NULL);
+                (1, '2025-07-01'),   -- válido
+                (2, NULL),           -- vencido
+                (3, '2025-06-15'),   -- vencido
+                (4, '2025-10-01'),   -- válido
+                (5, '2025-08-01')    -- válido
+        """.trimIndent())
+
+
+        db.execSQL("""
+            INSERT INTO Usuario (Nombre, Pass, ClienteID, RolUsuario)
+            VALUES 
+            ('ana', 'ana123', 1, 2),
+            ('bruno', 'bruno123', 2, 2),
+            ('clara', 'clara123', 3, 2),
+            ('diego', 'diego123', 4, 2)
         """.trimIndent())
 
         db.execSQL("""
             INSERT INTO Pago (ClienteID, MembresiaID, ActividadID, Monto, MetodoPago, Cuotas, FechaPago)
             VALUES 
-            (1, 1, NULL, 30000.00, 'Efectivo', 1, '2025-06-01'),
-            (2, 2, NULL, 80000.00, 'Tarjeta de Crédito', 3, '2025-06-02');
+            (1, 1, NULL, 30000.00, 'Efectivo', 1, '2025-05-01'),           -- Mensual
+            (2, 2, NULL, 80000.00, 'Tarjeta de Crédito', 3, '2025-06-01'), -- Trimestral
+            (3, 3, NULL, 150000.00, 'Tarjeta de Crédito', 6, '2025-06-05'),-- Semestral
+            (4, 4, NULL, 290000.00, 'Tarjeta de Crédito', 6, '2025-04-15'),-- Anual
+            (5, 1, NULL, 30000.00, 'Efectivo', 1, '2025-06-03');            -- Mensual
         """.trimIndent())
 
 
@@ -169,35 +189,27 @@ class ClubDBHelper (context: Context): SQLiteOpenHelper(context, "ClubDB", null,
         db.execSQL("""
             INSERT INTO Cliente (Nombre, Apellido, TipoDocumento, NumeroDocumento, FechaInscripcion, AptoFisico)
             VALUES 
-            ('Sofía', 'Martínez', 'DNI', 33111222, '2025-06-01', 0),
-            ('Matías', 'López', 'DNI', 34455666, '2025-06-02', 1);
+            ('Federico', 'Suárez', 'DNI', 30666666, '2025-06-01', 1),
+            ('Gabriela', 'Paz', 'DNI', 30777777, '2025-06-02', 0),
+            ('Hernán', 'Ruiz', 'DNI', 30888888, '2025-06-03', 1),
+            ('Isabel', 'Mendoza', 'DNI', 30999999, '2025-06-04', 1),
+            ('Joaquín', 'Silva', 'DNI', 31000000, '2025-06-05', 1)
         """.trimIndent())
 
         db.execSQL("""
             INSERT INTO NoSocio (ClienteID)
-            VALUES
-            (4),
-            (5);
+            VALUES (6), (7), (8), (9), (10)
         """.trimIndent())
 
         db.execSQL("""
             INSERT INTO Pago (ClienteID, MembresiaID, ActividadID, Monto, MetodoPago, Cuotas, FechaPago)
             VALUES 
-            (4, NULL, 14, 4000.00, 'Efectivo', 1, '2025-06-01'),
-            (5, NULL, 10, 3500.00, 'Efectivo', 1, '2025-06-02'),
-            (4, NULL, 8, 2500.00, 'Efectivo', 1, '2025-06-05'),
-            (5, NULL, 11, 6000.00, 'Efectivo', 1, '2025-06-05'),
-            (4, NULL, 15, 3300.00, 'Efectivo', 1, '2025-06-06'),
-            (5, NULL, 4, 2000.00, 'Efectivo', 1, '2025-06-07');
+            (6, NULL, 1, 2000.00, 'Efectivo', 1, '2025-06-01'),  -- Fútbol
+            (7, NULL, 8, 2500.00, 'Efectivo', 1, '2025-06-02'),  -- Zumba
+            (8, NULL, 14, 4000.00, 'Efectivo', 1, '2025-06-03'), -- Funcional
+            (9, NULL, 10, 3500.00, 'Efectivo', 1, '2025-06-04'), -- Boxeo
+            (10, NULL, 9, 2800.00, 'Efectivo', 1, '2025-06-05'); -- Spinning
         """.trimIndent())
-
-        db.execSQL("""
-            INSERT INTO Usuario (Nombre, Pass, RolUsuario)
-            VALUES 
-            ('sofia', 'sofia123', 2),
-            ('matias', 'matias123', 2);
-        """.trimIndent())
-
     }
 
 
